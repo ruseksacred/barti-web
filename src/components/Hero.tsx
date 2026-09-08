@@ -63,119 +63,69 @@ const Hero = () => {
                 <div className="hero-visual">
                     <div className="hero-glow" />
 
-                    <div className="devices-showcase">
+                    <div className="browser-showcase">
+                        <div className="browser-window">
+                            <div className="browser-topbar">
+                                <div className="browser-dots">
+                                    <span />
+                                    <span />
+                                    <span />
+                                </div>
 
-                        <div className="laptop-perspective">
-                            <div className="laptop-mockup">
+                                <div className="browser-url">
+                                    studiodom.pl
+                                </div>
+                            </div>
 
-                                <div className="laptop-screen">
-                                    <div className="device-topbar">
-                                        <div className="device-dots">
-                                            <span />
-                                            <span />
-                                            <span />
-                                        </div>
+                            <div className="browser-content">
+                                <div className="browser-site-nav">
+                                    <strong>StudioDom</strong>
 
-                                        <div className="device-url">
-                                            studiownetrze.pl
-                                        </div>
-                                    </div>
-
-                                    <div className="device-site">
-                                        <div className="device-site-nav">
-                                            <strong>StudioDom</strong>
-
-                                            <div>
-                                                <span>Start</span>
-                                                <span>O nas</span>
-                                                <span>Usługi</span>
-                                                <span>Realizacje</span>
-                                                <span>Kontakt</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="device-site-hero interior-preview">
-                                            <div className="device-site-overlay">
-                                                <p>WNĘTRZA • PROJEKT • REALIZACJA</p>
-
-                                                <h2>
-                                                    Piękne wnętrza,
-                                                    <br />
-                                                    lepsze życie.
-                                                </h2>
-
-                                                <span className="device-site-description">
-                                                    Projektujemy funkcjonalne i ponadczasowe wnętrza,
-                                                    które zachwycają każdego dnia.
-                                                </span>
-
-                                                <button>Zobacz realizacje →</button>
-                                            </div>
-                                        </div>
-
-                                        <div className="device-site-stats">
-                                            <div>
-                                                <strong>01</strong>
-                                                <span>Projekt</span>
-                                            </div>
-
-                                            <div>
-                                                <strong>02</strong>
-                                                <span>Realizacja</span>
-                                            </div>
-
-                                            <div>
-                                                <strong>03</strong>
-                                                <span>Doradztwo</span>
-                                            </div>
-                                        </div>
+                                    <div>
+                                        <span>Start</span>
+                                        <span>O nas</span>
+                                        <span>Usługi</span>
+                                        <span>Realizacje</span>
+                                        <span>Kontakt</span>
                                     </div>
                                 </div>
 
-                                <div className="laptop-base" />
-                            </div>
-                        </div>
+                                <div className="browser-site-hero">
+                                    <div className="browser-site-overlay">
+                                        <p>WNĘTRZA • PROJEKT • REALIZACJA</p>
 
-                        <div className="phone-mockup">
-                            <div className="phone-screen">
-                                <div className="phone-notch" />
+                                        <h2>
+                                            Piękne wnętrza,
+                                            <br />
+                                            lepsze życie.
+                                        </h2>
 
-                                <div className="phone-site phone-interior">
-                                    <strong className="phone-brand">
-                                        StudioDom
-                                    </strong>
+                                        <span className="browser-site-description">
+                                            Projektujemy funkcjonalne i ponadczasowe wnętrza,
+                                            które zachwycają każdego dnia.
+                                        </span>
 
-                                    <p className="phone-label">
-                                        WNĘTRZA Z PASJĄ
-                                    </p>
+                                        <button>Zobacz realizacje</button>
+                                    </div>
+                                </div>
 
-                                    <h3>
-                                        Piękne wnętrza,
-                                        <br />
-                                        lepsze życie.
-                                    </h3>
+                                <div className="browser-site-features">
+                                    <div>
+                                        <strong>01</strong>
+                                        <span>Projekt</span>
+                                    </div>
 
-                                    <button>Zobacz</button>
+                                    <div>
+                                        <strong>02</strong>
+                                        <span>Realizacja</span>
+                                    </div>
 
-                                    <div className="phone-preview-box">
-                                        <div className="phone-preview-content">
-                                            <span>Projekt wnętrza</span>
-                                            <span>Kompleksowa realizacja</span>
-                                            <span>Doradztwo</span>
-                                        </div>
+                                    <div>
+                                        <strong>03</strong>
+                                        <span>Doradztwo</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-
-                    <div className="hero-floating-card">
-                        <span>↗</span>
-
-                        <div>
-                            <strong>Świetnie wygląda</strong>
-                            <p>na każdym urządzeniu</p>
                         </div>
                     </div>
                 </div>
