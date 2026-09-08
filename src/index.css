@@ -269,7 +269,22 @@ button {
 /* =========================
    PRAWA STRONA HERO
 ========================= */
+.device-frame {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    background: #0f151c;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.38), 0 0 60px rgba(139, 241, 63, 0.05);
+}
 
+.device-screen-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
 .hero-visual {
     position: relative;
     min-height: 560px;
@@ -597,9 +612,9 @@ button {
 ========================= */
 
 .services {
-    background: #f5f7f7;
-    color: #111820;
-    padding: 80px 0;
+    background: var(--background);
+    color: var(--text);
+    padding: 90px 0;
 }
 
 .services-inner {
@@ -612,28 +627,29 @@ button {
     justify-content: space-between;
     align-items: flex-end;
     gap: 40px;
-    margin-bottom: 42px;
+    margin-bottom: 46px;
 }
 
 .section-eyebrow {
-    color: #5fbc2c;
+    color: var(--primary);
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .section-heading h2 {
-    font-size: 38px;
+    color: var(--text);
+    font-size: 40px;
     line-height: 1.1;
     letter-spacing: -1.5px;
 }
 
 .section-description {
-    max-width: 420px;
-    color: #66717c;
+    max-width: 430px;
+    color: var(--text-secondary);
     font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 /* =========================
@@ -643,7 +659,7 @@ button {
 .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 22px;
 }
 
 /* =========================
@@ -652,20 +668,22 @@ button {
 
 .service-card {
     position: relative;
-    background: #ffffff;
-    border: 1px solid #e3e8eb;
-    border-radius: 16px;
+    min-height: 310px;
     padding: 30px;
-    min-height: 300px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
     .service-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(139, 241, 63, 0.55);
-        box-shadow: 0 18px 40px rgba(16, 24, 33, 0.08);
+        transform: translateY(-6px);
+        border-color: rgba(139, 241, 63, 0.45);
+        background: var(--surface-light);
+        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22), 0 0 30px rgba(139, 241, 63, 0.05);
     }
 
 /* =========================
@@ -675,7 +693,7 @@ button {
 .service-card-featured {
     border: 2px solid var(--primary);
     transform: translateY(-8px);
-    box-shadow: 0 22px 50px rgba(16, 24, 33, 0.12), 0 0 0 1px rgba(139, 241, 63, 0.08);
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.24), 0 0 35px rgba(139, 241, 63, 0.09);
 }
 
     .service-card-featured:hover {
@@ -684,7 +702,7 @@ button {
 
 .service-badge {
     position: absolute;
-    top: -15px;
+    top: -14px;
     left: 50%;
     transform: translateX(-50%);
     padding: 7px 14px;
@@ -694,7 +712,7 @@ button {
     font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
-    box-shadow: 0 8px 20px rgba(139, 241, 63, 0.22);
+    box-shadow: 0 8px 20px rgba(139, 241, 63, 0.18);
 }
 
 /* =========================
@@ -702,16 +720,18 @@ button {
 ========================= */
 
 .service-icon {
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 13px;
-    background: rgba(139, 241, 63, 0.13);
-    color: #4f9d24;
-    font-size: 26px;
     margin-bottom: 24px;
+    border-radius: 14px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 26px;
+    font-weight: 800;
+    border: 1px solid rgba(139, 241, 63, 0.12);
 }
 
 /* =========================
@@ -719,15 +739,16 @@ button {
 ========================= */
 
 .service-card h3 {
-    font-size: 20px;
+    color: var(--text);
+    font-size: 21px;
     margin-bottom: 12px;
 }
 
 .service-card > p {
-    color: #66717c;
+    color: var(--text-secondary);
     font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 26px;
+    line-height: 1.65;
+    margin-bottom: 28px;
 }
 
 /* =========================
@@ -737,7 +758,7 @@ button {
 .service-price {
     margin-top: auto;
     margin-bottom: 18px;
-    color: #111820;
+    color: var(--text);
     font-size: 22px;
     font-weight: 800;
 }
@@ -751,7 +772,7 @@ button {
     align-items: center;
     gap: 8px;
     width: fit-content;
-    color: #42891f;
+    color: var(--primary);
     font-size: 13px;
     font-weight: 700;
     transition: gap 0.2s ease, color 0.2s ease;
@@ -759,7 +780,7 @@ button {
 
     .service-link:hover {
         gap: 12px;
-        color: #2f6f15;
+        color: var(--primary-hover);
     }
 
 /* =========================
@@ -773,7 +794,7 @@ button {
 
     .services-grid {
         grid-template-columns: 1fr;
-        gap: 22px;
+        gap: 24px;
     }
 
     .service-card-featured {
@@ -781,8 +802,13 @@ button {
     }
 
         .service-card-featured:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
         }
+    .device-frame {
+        max-width: 520px;
+        border-radius: 24px;
+        margin: 0 auto;
+    }
 }
 
 /* =========================
@@ -791,7 +817,7 @@ button {
 
 @media (max-width: 600px) {
     .services {
-        padding: 60px 0;
+        padding: 65px 0;
     }
 
     .services-inner {
@@ -801,7 +827,7 @@ button {
     .section-heading {
         flex-direction: column;
         gap: 18px;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
     }
 
         .section-heading h2 {
@@ -824,5 +850,15 @@ button {
     .service-badge {
         top: -13px;
         font-size: 10px;
+    }
+    .device-frame {
+        max-width: 280px;
+        border-radius: 32px;
+        border: 2px solid #2f3944;
+        margin: 0 auto;
+    }
+
+    .device-screen-image {
+        border-radius: 28px;
     }
 }
