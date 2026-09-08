@@ -263,6 +263,18 @@ button {
    LAPTOP
 ========================= */
 
+.laptop-perspective {
+    width: 100%;
+    max-width: 570px;
+    perspective: 1400px;
+    transform: rotateY(-8deg) rotateX(2deg) rotateZ(-1deg);
+    transform-origin: center center;
+    transition: transform 0.4s ease;
+}
+
+    .laptop-perspective:hover {
+        transform: rotateY(-4deg) rotateX(1deg) rotateZ(0deg) translateY(-4px);
+    }
 .laptop-mockup {
     position: relative;
     width: 100%;
@@ -272,10 +284,11 @@ button {
 .laptop-screen {
     position: relative;
     overflow: hidden;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 20px 20px 12px 12px;
-    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45), 0 0 65px rgba(139, 241, 63, 0.06);
+    background: #161a1f;
+    border: 3px solid #353c45;
+    border-bottom-width: 5px;
+    border-radius: 18px 18px 10px 10px;
+    box-shadow: 30px 35px 70px rgba(0, 0, 0, 0.48), 0 0 45px rgba(139, 241, 63, 0.05);
 }
 
 .device-topbar {
@@ -350,9 +363,8 @@ button {
     min-height: 250px;
     padding: 0;
     overflow: hidden;
-    border-radius: 14px;
-    background: linear-gradient( 90deg, rgba(7, 12, 16, 0.94), rgba(7, 12, 16, 0.58), rgba(7, 12, 16, 0.10) ), radial-gradient( circle at 80% 50%, rgba(139, 241, 63, 0.18), transparent 45% ), #17211c;
-    border: 1px solid rgba(139, 241, 63, 0.14);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 177, 125, 0.22);
 }
 
     .device-site-hero p {
@@ -379,6 +391,11 @@ button {
         font-weight: 800;
         cursor: pointer;
     }
+.interior-preview {
+    background: linear-gradient( 90deg, rgba(31, 22, 17, 0.94) 0%, rgba(44, 30, 22, 0.70) 42%, rgba(35, 26, 21, 0.22) 75% ), url("./assets/interior-hero.jpg");
+    background-size: cover;
+    background-position: center;
+}
 
 .device-site-stats {
     display: grid;
@@ -412,15 +429,16 @@ button {
 }
 
     .device-site-overlay p {
-        color: var(--primary);
+        color: #d8b277;
         font-size: 8px;
         font-weight: 800;
-        letter-spacing: 1.2px;
+        letter-spacing: 1.4px;
     }
 
     .device-site-overlay h2 {
         margin-top: 12px;
         max-width: 340px;
+        color: #ffffff;
         font-size: 31px;
         line-height: 1.08;
     }
@@ -428,10 +446,11 @@ button {
 .device-site-description {
     max-width: 290px;
     margin-top: 12px;
-    color: #b7bdc6;
+    color: #ded4cc;
     font-size: 10px;
     line-height: 1.5;
 }
+
 
 .device-site-overlay button {
     width: fit-content;
@@ -439,10 +458,16 @@ button {
     padding: 10px 15px;
     border: 0;
     border-radius: 7px;
-    background: var(--primary);
-    color: #10151b;
+    background: #e5c18d;
+    color: #241913;
     font-size: 10px;
     font-weight: 800;
+    cursor: pointer;
+}
+.device-site-stats strong {
+    display: block;
+    color: #d8b277;
+    font-size: 15px;
 }
 
 /* =========================
@@ -782,3 +807,27 @@ button {
         bottom: -15px;
     }
 }
+.phone-interior {
+    background: linear-gradient( rgba(28, 20, 16, 0.78), rgba(28, 20, 16, 0.96) ), url("./assets/interior-hero.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+    .phone-interior .phone-label {
+        color: #d8b277;
+    }
+
+    .phone-interior button {
+        background: #e5c18d;
+        color: #241913;
+    }
+
+    .phone-interior .phone-preview-box {
+        background: rgba(71, 48, 35, 0.88);
+        border: 1px solid rgba(216, 178, 119, 0.18);
+    }
+
+    .phone-interior .phone-preview-content span {
+        color: #e1d7cf;
+        border-color: rgba(255, 255, 255, 0.08);
+    }
