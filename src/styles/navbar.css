@@ -1,0 +1,205 @@
+.navbar {
+    height: 84px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(16, 24, 33, 0.94);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+}
+
+.navbar-inner {
+    width: min(var(--container), calc(100% - 48px));
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+    .logo img {
+        display: block;
+        height: 48px;
+        width: auto;
+    }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+    .nav-links a {
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s ease, background 0.2s ease;
+    }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+.nav-cta {
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #10151b;
+    font-size: 14px;
+    font-weight: 800;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+    .nav-cta:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+.nav-mobile-cta {
+    display: none;
+}
+
+/* HAMBURGER */
+
+.hamburger {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    z-index: 1100;
+}
+
+    .hamburger span {
+        width: 24px;
+        height: 2px;
+        border-radius: 10px;
+        background: var(--text);
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+/* TABLET */
+
+@media (max-width: 950px) {
+    .navbar-inner {
+        width: min(100% - 36px, var(--container));
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+        .nav-links a {
+            font-size: 13px;
+        }
+
+    .nav-cta {
+        padding: 11px 16px;
+        font-size: 13px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+    .navbar {
+        height: 72px;
+    }
+
+    .navbar-inner {
+        width: calc(100% - 30px);
+    }
+
+    .logo img {
+        height: 38px;
+    }
+
+    .nav-cta {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        width: 100%;
+        padding: 26px 24px 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        background: rgba(16, 24, 33, 0.99);
+        backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        transform: translateY(-130%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s ease, opacity 0.25s ease;
+        z-index: 999;
+    }
+
+        .nav-links.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-links a {
+            width: 100%;
+            padding: 13px 10px;
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+            .nav-links a:hover {
+                background: var(--surface);
+                color: var(--primary);
+            }
+
+    .nav-mobile-cta {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        padding: 14px !important;
+        background: var(--primary);
+        color: #10151b !important;
+        font-weight: 800 !important;
+    }
+
+        .nav-mobile-cta:hover {
+            background: var(--primary-hover) !important;
+            color: #10151b !important;
+        }
+}

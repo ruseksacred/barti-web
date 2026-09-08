@@ -463,6 +463,49 @@ button {
         color: #95a0ab;
         font-size: 10px;
     }
+/* =========================
+   TABLET DEVICE
+========================= */
+
+.tablet-preview {
+    display: none;
+    width: 100%;
+    justify-content: center;
+}
+
+.tablet-frame {
+    position: relative;
+    width: 520px;
+    padding: 14px;
+    background: #0b0f13;
+    border: 2px solid #35404b;
+    border-radius: 28px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.42), 0 0 35px rgba(139, 241, 63, 0.06);
+}
+
+.tablet-camera {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: #222a32;
+    z-index: 2;
+}
+
+.tablet-frame-screen {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #111820;
+}
+
+    .tablet-frame-screen img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 
 /* =========================
    TABLET

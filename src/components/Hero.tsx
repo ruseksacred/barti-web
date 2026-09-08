@@ -1,4 +1,6 @@
 import studioDomDesktop from "../assets/studiodom-desktop.png";
+import studioDomTablet from "../assets/studiodom-tablet.png";
+import studioDomMobile from "../assets/studiodom-mobile.png";
 
 const Hero = () => {
     return (
@@ -65,24 +67,53 @@ const Hero = () => {
                 <div className="hero-visual">
                     <div className="hero-glow" />
 
-                    <div className="device-frame">
-                        <picture>
-                            <source
-                                media="(max-width: 600px)"
-                                srcSet={studioDomDesktop}
-                            />
+                    <div className="desktop-preview">
+                        <div className="browser-frame">
+                            <div className="browser-frame-top">
+                                <div className="browser-frame-dots">
+                                    <span />
+                                    <span />
+                                    <span />
+                                </div>
 
-                            <source
-                                media="(max-width: 950px)"
-                                srcSet={studioDomDesktop}
-                            />
+                                <div className="browser-frame-url">
+                                    twojafirma.pl
+                                </div>
+                            </div>
 
-                            <img
-                                src={studioDomDesktop}
-                                alt="Przykładowa realizacja strony internetowej StudioDom"
-                                className="device-screen-image"
-                            />
-                        </picture>
+                            <div className="browser-frame-screen">
+                                <img
+                                    src={studioDomDesktop}
+                                    alt="Przykładowa strona internetowa StudioDom"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="tablet-preview">
+                        <div className="tablet-frame">
+                            <div className="tablet-camera" />
+
+                            <div className="tablet-frame-screen">
+                                <img
+                                    src={studioDomTablet}
+                                    alt="Tabletowa wersja strony StudioDom"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mobile-preview">
+                        <div className="phone-frame">
+                            <div className="phone-frame-notch" />
+
+                            <div className="phone-frame-screen">
+                                <img
+                                    src={studioDomMobile}
+                                    alt="Mobilna wersja strony StudioDom"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
