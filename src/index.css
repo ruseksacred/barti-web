@@ -486,7 +486,7 @@ button {
         min-height: 520px;
     }
 
-    .devices-showcase {
+    .browser-showcase {
         margin: 0 auto;
     }
 
@@ -507,7 +507,7 @@ button {
         font-size: 13px;
     }
 }
-}
+
 
 /* =========================
    MOBILE
