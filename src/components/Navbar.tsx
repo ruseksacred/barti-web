@@ -14,43 +14,28 @@ const Navbar = () => {
                 <a href="#start" className="logo" onClick={closeMenu}>
                     <img src={logo} alt="Barti Web" />
                 </a>
-
                 <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-                    <a href="#start" onClick={closeMenu}>
-                        Start
-                    </a>
-
-                    <a href="#uslugi" onClick={closeMenu}>
-                        Usługi
-                    </a>
-
-                    <a href="#realizacje" onClick={closeMenu}>
-                        Realizacje
-                    </a>
-
-                    <a href="#cennik" onClick={closeMenu}>
-                        Cennik
-                    </a>
-
-                    <a href="#o-mnie" onClick={closeMenu}>
-                        O mnie
-                    </a>
-
-                    <a href="#kontakt" onClick={closeMenu}>
-                        Kontakt
-                    </a>
-
                     <a
-                        href="#kontakt"
-                        className="nav-mobile-cta"
+                        href="#jak-to-dziala"
+                        className="nav-process"
                         onClick={closeMenu}
                     >
+                        ToProste!
+                    </a>
+
+                    <a href="#uslugi" onClick={closeMenu}>Usługi</a>
+                    <a href="#realizacje" onClick={closeMenu}>Realizacje</a>
+                    <a href="#cennik" onClick={closeMenu}>Cennik</a>
+                    <a href="#o-mnie" onClick={closeMenu}>O mnie</a>
+                    <a href="#kontakt" onClick={closeMenu}>Kontakt</a>
+
+                    <a href="#kontakt" className="nav-mobile-cta" onClick={closeMenu}>
                         Darmowa wycena
                     </a>
                 </nav>
 
                 <a href="#kontakt" className="nav-cta">
-                    Darmowa wycena
+                    Zadzwoń, pogadajmy!
                 </a>
 
                 <button
