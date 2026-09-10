@@ -1,4 +1,4 @@
-import logo from "../assets/barti-web-logo-green.png";
+import logo from "../assets/logo_pom_przezr.png";
 
 const Footer = () => {
     return (
