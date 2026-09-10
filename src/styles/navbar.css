@@ -137,13 +137,12 @@
     }
 }
 .nav-process {
-    text-align: center;
-    background: var(--primary) !important;
-    color: #10151b !important;
+    color: var(--primary) !important;
+    font-weight: 700 !important;
 }
 
     .nav-process:hover {
-        background: var(--primary-hover) !important;
+        color: var(--primary-hover) !important;
     }
 
 
@@ -229,13 +228,12 @@
         }
 
     .nav-process {
-        text-align: center;
-        background: var(--primary) !important;
-        color: #10151b !important;
+        color: var(--primary) !important;
+        font-weight: 700 !important;
     }
 
         .nav-process:hover {
-            background: var(--primary-hover) !important;
+            color: var(--primary-hover) !important;
         }
 }
 
