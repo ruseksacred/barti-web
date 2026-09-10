@@ -65,18 +65,16 @@
     display: none;
 }
 .nav-process {
-    padding: 9px 14px;
-    border-radius: 9px;
-    background: var(--primary);
-    color: #10151b !important;
-    font-weight: 800 !important;
-    transition: background 0.2s ease, transform 0.2s ease;
+    color: var(--primary) !important;
+    font-weight: 700;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
 }
 
     .nav-process:hover {
-        background: var(--primary-hover);
-        color: #10151b !important;
-        transform: translateY(-1px);
+        color: var(--primary-hover) !important;
+        background: transparent;
     }
 
 /* HAMBURGER */
