@@ -8,6 +8,7 @@ import "./styles/navbar.css";
 import "./styles/hero.css";
 import "./styles/services.css";
 import "./styles/footer.css";
+import "./styles/contact.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
