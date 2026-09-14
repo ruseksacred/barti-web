@@ -25,7 +25,7 @@ const Contact = () => {
                         <div className="contact-details">
                             <a href="tel:+48123456789">
                                 <span>☎</span>
-                                +48 123 456 789
+                                +48 791020803
                             </a>
 
                             <a href="mailto:kontakt@bartiweb.pl">
