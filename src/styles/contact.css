@@ -183,6 +183,25 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 30px rgba(139, 241, 63, 0.14);
     }
+    .contact-submit:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+.contact-status {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.contact-status-success {
+    color: var(--primary);
+}
+
+.contact-status-error {
+    color: #ff6b6b;
+}
 
 /* TABLET */
 
