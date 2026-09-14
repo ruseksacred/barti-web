@@ -1,3 +1,7 @@
+/* =========================
+   HERO
+========================= */
+
 .hero {
     min-height: calc(100vh - 84px);
     display: flex;
@@ -47,6 +51,11 @@
     line-height: 1.7;
 }
 
+
+/* =========================
+   BUTTONS
+========================= */
+
 .hero-buttons {
     display: flex;
     gap: 14px;
@@ -87,7 +96,10 @@
         color: var(--primary);
     }
 
-/* FEATURES */
+
+/* =========================
+   FEATURES
+========================= */
 
 .hero-features {
     display: flex;
@@ -102,6 +114,7 @@
 }
 
 .hero-feature-icon {
+    flex-shrink: 0;
     color: var(--primary);
     font-size: 22px;
 }
@@ -115,9 +128,13 @@
 .hero-feature p {
     color: var(--text-secondary);
     font-size: 12px;
+    line-height: 1.4;
 }
 
-/* VISUAL */
+
+/* =========================
+   VISUAL
+========================= */
 
 .hero-visual {
     position: relative;
@@ -136,7 +153,9 @@
     border-radius: 50%;
     background: radial-gradient( circle, rgba(139, 241, 63, 0.18), rgba(139, 241, 63, 0.06) 45%, transparent 72% );
     filter: blur(18px);
+    pointer-events: none;
 }
+
 
 /* =========================
    DESKTOP BROWSER
@@ -213,6 +232,7 @@
         height: auto;
     }
 
+
 /* =========================
    TABLET
 ========================= */
@@ -257,41 +277,49 @@
         height: auto;
     }
 
+
 /* =========================
-   PHONE
+   MOBILE SHOWCASE
 ========================= */
+
+.hero-mobile-showcase {
+    display: none;
+    position: relative;
+    z-index: 2;
+}
 
 .mobile-preview {
     display: none;
-    width: 100%;
-    justify-content: center;
 }
+
+
+/* PHONE */
 
 .phone-frame {
     position: relative;
-    width: 260px;
-    padding: 9px;
-    background: #0b0f13;
+    width: 100%;
+    padding: 7px;
+    background: #080d12;
     border: 2px solid #35404b;
-    border-radius: 36px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.42), 0 0 35px rgba(139, 241, 63, 0.06);
+    border-radius: 30px;
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), 0 0 30px rgba(139, 241, 63, 0.06);
 }
 
 .phone-frame-notch {
     position: absolute;
-    width: 86px;
-    height: 20px;
-    top: 9px;
+    width: 60px;
+    height: 15px;
+    top: 7px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
-    background: #05080b;
-    border-radius: 0 0 14px 14px;
+    z-index: 3;
+    background: #030608;
+    border-radius: 0 0 10px 10px;
 }
 
 .phone-frame-screen {
     overflow: hidden;
-    border-radius: 28px;
+    border-radius: 23px;
     background: #111820;
 }
 
@@ -301,11 +329,13 @@
         height: auto;
     }
 
+
 /* =========================
    TABLET LAYOUT
 ========================= */
 
 @media (min-width: 601px) and (max-width: 950px) {
+
     .hero {
         padding: 60px 0 80px;
     }
@@ -338,30 +368,37 @@
         min-height: 540px;
     }
 
-    .desktop-preview,
-    .mobile-preview {
+    .desktop-preview {
         display: none;
     }
 
     .tablet-preview {
         display: flex;
     }
+
+    .hero-mobile-showcase {
+        display: none;
+    }
 }
+
 
 /* =========================
    MOBILE
 ========================= */
 
 @media (max-width: 600px) {
+
     .hero {
         min-height: auto;
-        padding: 44px 0 64px;
+        padding: 44px 0 60px;
+        /* telefon nie będzie obcinany */
+        overflow: visible;
     }
 
     .hero-inner {
         width: calc(100% - 30px);
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 38px;
     }
 
     .hero-content {
@@ -373,7 +410,7 @@
     }
 
     .hero-title {
-        font-size: 42px;
+        font-size: clamp(36px, 10vw, 42px);
         letter-spacing: -2px;
     }
 
@@ -383,6 +420,9 @@
         font-size: 16px;
     }
 
+
+    /* BUTTONS */
+
     .hero-buttons {
         flex-direction: column;
     }
@@ -391,16 +431,27 @@
         width: 100%;
     }
 
-    .hero-features {
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
-        flex-direction: column;
-        align-items: flex-start;
+
+    /* chowamy zwykłe features */
+
+    .hero-features-desktop {
+        display: none;
     }
 
+
+    /* PRAWA CZĘŚĆ */
+
     .hero-visual {
-        min-height: 480px;
+        min-height: auto;
+        width: 100%;
+        display: block;
+    }
+
+    .hero-glow {
+        width: 340px;
+        height: 340px;
+        top: 20%;
+        right: -80px;
     }
 
     .desktop-preview,
@@ -408,7 +459,99 @@
         display: none;
     }
 
+
+    /* TELEFON + INFORMACJE */
+
+    .hero-mobile-showcase {
+        display: grid;
+        width: 100%;
+        grid-template-columns: minmax(145px, 0.8fr) minmax(180px, 1.2fr);
+        align-items: center;
+        gap: 24px;
+    }
+
     .mobile-preview {
         display: flex;
+        width: 100%;
+        justify-content: center;
     }
+
+    .phone-frame {
+        width: 100%;
+        max-width: 185px;
+    }
+
+
+    /* INFORMACJE OBOK TELEFONU */
+
+    .hero-mobile-features {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        min-width: 0;
+    }
+
+        .hero-mobile-features .hero-feature {
+            text-align: left;
+            gap: 9px;
+        }
+
+        .hero-mobile-features .hero-feature-icon {
+            font-size: 20px;
+        }
+
+        .hero-mobile-features .hero-feature strong {
+            font-size: 14px;
+            line-height: 1.25;
+        }
+
+        .hero-mobile-features .hero-feature p {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 390px) {
+
+    .hero-mobile-showcase {
+        grid-template-columns: 130px 1fr;
+        gap: 14px;
+    }
+
+    .phone-frame {
+        max-width: 140px;
+        padding: 5px;
+        border-radius: 24px;
+    }
+
+    .phone-frame-screen {
+        border-radius: 18px;
+    }
+
+    .phone-frame-notch {
+        width: 48px;
+        height: 12px;
+        top: 5px;
+    }
+
+    .hero-mobile-features {
+        gap: 20px;
+    }
+
+        .hero-mobile-features .hero-feature-icon {
+            font-size: 17px;
+        }
+
+        .hero-mobile-features .hero-feature strong {
+            font-size: 12px;
+        }
+
+        .hero-mobile-features .hero-feature p {
+            font-size: 10px;
+        }
 }
