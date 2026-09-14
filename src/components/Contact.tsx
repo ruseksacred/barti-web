@@ -19,11 +19,11 @@ const Contact = () => {
                         <h3>Bez zobowiązań.</h3>
 
                         <p className="contact-info-text">
-                            Napisz lub zadzwoń. Bez technicznego bełkotu i bez presji.
+                            Napisz lub zadzwoń. Pogadajmy :)
                         </p>
 
                         <div className="contact-details">
-                            <a href="tel:+48123456789">
+                            <a href="tel:+48791020803">
                                 <span>☎</span>
                                 +48 791020803
                             </a>
@@ -36,7 +36,7 @@ const Contact = () => {
                     </div>
 
                     <form className="contact-form">
-                        <p className="contact-form-title">Albo napisz:</p>
+                        <p className="contact-form-title">Albo napisz, ja oddzwonię:</p>
 
                         <div className="contact-form-row">
                             <div className="contact-field">
