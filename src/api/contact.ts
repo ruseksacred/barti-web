@@ -20,6 +20,16 @@ export default async function handler(
     }
 
     try {
+        if (
+            !process.env.SMTP_HOST ||
+            !process.env.SMTP_PORT ||
+            !process.env.SMTP_USER ||
+            !process.env.SMTP_PASSWORD ||
+            !process.env.CONTACT_EMAIL
+        ) {
+            throw new Error("Brakuje zmiennych środowiskowych SMTP");
+        }
+
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: Number(process.env.SMTP_PORT),
@@ -30,8 +40,10 @@ export default async function handler(
             },
         });
 
+        await transporter.verify();
+
         await transporter.sendMail({
-            from: `"Formularz Barti Web" <${process.env.SMTP_USER}>`,
+            from: `"Barti Web" <${process.env.SMTP_USER}>`,
             to: process.env.CONTACT_EMAIL,
             subject: `Nowa wiadomość ze strony od ${name}`,
             text: `
@@ -48,10 +60,10 @@ ${message}
             message: "Wiadomość została wysłana.",
         });
     } catch (error) {
-        console.error(error);
+        console.error("CONTACT ERROR:", error);
 
         return res.status(500).json({
-            message: "Nie udało się wysłać wiadomości.",
+            message: "Błąd podczas wysyłania wiadomości.",
         });
     }
 }
