@@ -26,6 +26,7 @@ const Navbar = () => {
                     <a href="#uslugi" onClick={closeMenu}>Usługi</a>
                     <a href="#realizacje" onClick={closeMenu}>Realizacje</a>
                     <a href="#cennik" onClick={closeMenu}>Cennik</a>
+                    <a href="#faq" onClick={closeMenu}>FAQ</a>
                     <a href="#o-mnie" onClick={closeMenu}>O mnie</a>
                     <a href="#kontakt" onClick={closeMenu}>Kontakt</a>
 
