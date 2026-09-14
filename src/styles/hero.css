@@ -524,19 +524,27 @@
     }
 
     .phone-frame {
-        max-width: 140px;
-        padding: 5px;
-        border-radius: 24px;
+        position: relative;
+        width: 100%;
+        padding: 7px;
+        background: #080d12;
+        border: 2px solid #35404b;
+        border-radius: 30px;
+        box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), 0 0 30px rgba(139, 241, 63, 0.06);
     }
 
     .phone-frame-screen {
-        border-radius: 18px;
+        overflow: hidden;
+        border-radius: 22px;
+        background: #111820;
     }
 
-    .phone-frame-notch {
-        width: 48px;
-        height: 12px;
-        top: 5px;
+    .phone-camera {
+        width: 6px;
+        height: 6px;
+        margin: 2px auto 7px;
+        border-radius: 50%;
+        background: #35404b;
     }
 
     .hero-mobile-features {

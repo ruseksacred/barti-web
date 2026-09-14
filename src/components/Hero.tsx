@@ -24,10 +24,8 @@ const Hero = () => {
     return (
         <section className="hero" id="start">
             <div className="hero-inner">
-
                 {/* LEWA STRONA */}
                 <div className="hero-content">
-
                     <p className="hero-eyebrow">
                         TWOJA FIRMA. WIĘKSZE MOŻLIWOŚCI.
                     </p>
@@ -82,13 +80,11 @@ const Hero = () => {
 
                 {/* PRAWA STRONA */}
                 <div className="hero-visual">
-
                     <div className="hero-glow" />
 
                     {/* DESKTOP */}
                     <div className="desktop-preview">
                         <div className="browser-frame">
-
                             <div className="browser-frame-top">
                                 <div className="browser-frame-dots">
                                     <span />
@@ -107,14 +103,12 @@ const Hero = () => {
                                     alt="Przykładowa strona internetowa StudioDom"
                                 />
                             </div>
-
                         </div>
                     </div>
 
                     {/* TABLET */}
                     <div className="tablet-preview">
                         <div className="tablet-frame">
-
                             <div className="tablet-camera" />
 
                             <div className="tablet-frame-screen">
@@ -123,17 +117,14 @@ const Hero = () => {
                                     alt="Tabletowa wersja strony StudioDom"
                                 />
                             </div>
-
                         </div>
                     </div>
 
                     {/* MOBILE */}
                     <div className="hero-mobile-showcase">
-
                         <div className="mobile-preview">
                             <div className="phone-frame">
-
-                                <div className="phone-frame-notch" />
+                                <div className="phone-camera" />
 
                                 <div className="phone-frame-screen">
                                     <img
@@ -141,7 +132,6 @@ const Hero = () => {
                                         alt="Mobilna wersja strony StudioDom"
                                     />
                                 </div>
-
                             </div>
                         </div>
 
@@ -162,11 +152,8 @@ const Hero = () => {
                                 </div>
                             ))}
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         </section>
     );
