@@ -10,6 +10,7 @@ import "./styles/services.css";
 import "./styles/footer.css";
 import "./styles/contact.css";
 import "./styles/faq.css";
+import "./styles/about.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
