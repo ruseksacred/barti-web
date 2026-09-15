@@ -20,13 +20,14 @@ const About = () => {
                     <p className="about-eyebrow">O MNIE</p>
 
                     <h2>
-                        Cześć, jestem <span>Bartosz.</span>
+                        Cześć, jestem <span>Bartek.</span>
                     </h2>
 
                     <p>
-                        Tworzę nowoczesne strony internetowe dla lokalnych firm,
-                        które chcą wyglądać profesjonalnie w internecie i ułatwić
-                        klientom kontakt.
+                        Od ponad 7 lat pracuję w branży IT. W tym czasie uczestniczyłem w wielu
+                        ciekawych projektach dla klientów z branży morskiej, samochodowej czy 
+                        medycznej. Dziś chcę wykorzystać swoje doświadczenie aby pomóc Tobie
+                        lub Twojemu biznesowi skutecznie działać w sieci.
                     </p>
 
                     <p>
@@ -34,32 +35,6 @@ const About = () => {
                         dopasowane do konkretnej firmy. Pomagam przejść od pierwszego
                         pomysłu aż do publikacji gotowej strony.
                     </p>
-
-                    <div className="about-features">
-                        <div className="about-feature">
-                            <span>✓</span>
-                            <div>
-                                <strong>Nowoczesny design</strong>
-                                <p>Przejrzysty wygląd dopasowany do charakteru firmy.</p>
-                            </div>
-                        </div>
-
-                        <div className="about-feature">
-                            <span>✓</span>
-                            <div>
-                                <strong>Responsywność</strong>
-                                <p>Strona działa dobrze na telefonie, tablecie i komputerze.</p>
-                            </div>
-                        </div>
-
-                        <div className="about-feature">
-                            <span>✓</span>
-                            <div>
-                                <strong>Wsparcie po wdrożeniu</strong>
-                                <p>Pomoc również po publikacji gotowej strony.</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
