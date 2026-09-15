@@ -30,31 +30,20 @@
     border-radius: 50%;
     background: radial-gradient( circle, rgba(139, 241, 63, 0.18), rgba(139, 241, 63, 0.05) 45%, transparent 72% );
     filter: blur(22px);
-    animation: aboutGlowPulse 4s ease-in-out infinite;
 }
-@keyframes aboutGlowPulse {
-    0%, 100% {
-        opacity: 0.7;
-        transform: translate(-50%, -50%) scale(1);
-    }
 
-    50% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.08);
-    }
-
-    .about-photo-frame {
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        max-width: 280px;
-        aspect-ratio: 1 / 1;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        border-radius: 50%;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 40px rgba(139, 241, 63, 0.05);
-        animation: aboutPhotoIn 0.8s ease both;
-    }
+.about-photo-frame {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 40px rgba(139, 241, 63, 0.05);
+    animation: aboutPhotoIn 0.8s ease both;
+}
 
     .about-photo-frame img {
         width: 100%;
@@ -73,59 +62,61 @@
         transform: scale(1.03);
     }
 
-    @keyframes aboutPhotoIn {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-    /* PRAWA STRONA */
-
-    .about-eyebrow {
-        margin-bottom: 12px;
-        color: var(--primary);
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 2px;
+@keyframes aboutPhotoIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
     }
 
-    .about-content h2 {
-        margin-bottom: 24px;
-        color: var(--text);
-        font-size: clamp(38px, 5vw, 54px);
-        line-height: 1.05;
-        letter-spacing: -2px;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
+}
+
+/* PRAWA STRONA */
+
+.about-eyebrow {
+    margin-bottom: 12px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.about-content h2 {
+    margin-bottom: 24px;
+    color: var(--text);
+    font-size: clamp(38px, 5vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
 
     .about-content h2 span {
         color: var(--primary);
     }
 
-    .about-content > p {
-        max-width: 650px;
-        margin-bottom: 18px;
-        color: var(--text-secondary);
-        font-size: 16px;
-        line-height: 1.75;
-    }
-    /* FEATURES */
+.about-content > p {
+    max-width: 650px;
+    margin-bottom: 18px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.75;
+}
 
-    .about-features {
-        display: grid;
-        gap: 18px;
-        margin-top: 34px;
-    }
+/* FEATURES */
 
-    .about-feature {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-    }
+.about-features {
+    display: grid;
+    gap: 18px;
+    margin-top: 34px;
+}
+
+.about-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
 
     .about-feature > span {
         width: 32px;
@@ -154,60 +145,62 @@
         font-size: 13px;
         line-height: 1.5;
     }
-    /* TABLET */
 
-    @media (max-width: 950px) {
-        .about-inner {
-            grid-template-columns: 1fr;
-            gap: 50px;
-        }
+/* TABLET */
 
-        .about-content {
-            text-align: center;
-        }
+@media (max-width: 950px) {
+    .about-inner {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
 
-            .about-content > p {
-                margin-left: auto;
-                margin-right: auto;
-            }
+    .about-content {
+        text-align: center;
+    }
 
-        .about-features {
-            max-width: 520px;
+        .about-content > p {
             margin-left: auto;
             margin-right: auto;
         }
 
-        .about-feature {
-            text-align: left;
-        }
+    .about-features {
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
     }
-    /* MOBILE */
 
-    @media (max-width: 600px) {
-        .about {
-            padding: 70px 0;
-        }
-
-        .about-inner {
-            width: calc(100% - 30px);
-            gap: 40px;
-        }
-
-        .about-photo-frame {
-            max-width: 220px;
-            border-radius: 22px;
-        }
-
-        .about-content h2 {
-            font-size: 38px;
-        }
-
-        .about-content > p {
-            font-size: 15px;
-        }
-
-        .about-glow {
-            width: 240px;
-            height: 240px;
-        }
+    .about-feature {
+        text-align: left;
     }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .about {
+        padding: 70px 0;
+    }
+
+    .about-inner {
+        width: calc(100% - 30px);
+        gap: 40px;
+    }
+
+    .about-photo-frame {
+        max-width: 220px;
+        border-radius: 22px;
+    }
+
+    .about-content h2 {
+        font-size: 38px;
+    }
+
+    .about-content > p {
+        font-size: 15px;
+    }
+
+ .about-glow {
+    width: 240px;
+    height: 240px;
+}
+}
