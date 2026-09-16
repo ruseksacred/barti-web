@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Contact from "./components/Contact";
 import FAQ from "./components/FAQ";
 import About from "./components/About";
+import Process from "./components/Process";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <main>
                 <Hero />
                 <Services />
+                <Process />
                 <FAQ />
                 <About />
                 <Contact />

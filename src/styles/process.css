@@ -1,0 +1,211 @@
+.process {
+    padding: 100px 0;
+    background: var(--background-dark);
+}
+
+.process-inner {
+    width: min(var(--container), calc(100% - 48px));
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+.process-heading {
+    max-width: 760px;
+    margin: 0 auto 60px;
+    text-align: center;
+}
+
+.process-eyebrow {
+    margin-bottom: 12px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.process-heading h2 {
+    margin-bottom: 18px;
+    color: var(--text);
+    font-size: clamp(38px, 5vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.process-heading > p:last-child {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* STEPS */
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.process-step {
+    position: relative;
+    min-height: 250px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+    .process-step:hover {
+        transform: translateY(-6px);
+        border-color: rgba(139, 241, 63, 0.4);
+        background: var(--surface-light);
+        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22), 0 0 30px rgba(139, 241, 63, 0.05);
+    }
+
+.process-number {
+    margin-bottom: 26px;
+    color: var(--primary);
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.process-step h3 {
+    margin-bottom: 12px;
+    color: var(--text);
+    font-size: 21px;
+}
+
+.process-step > p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* STRZAŁKA */
+
+.process-arrow {
+    position: absolute;
+    top: 50%;
+    right: -18px;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-dark);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* CTA */
+
+.process-cta {
+    margin-top: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.process-button {
+    min-height: 54px;
+    padding: 0 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--primary);
+    border-radius: 12px;
+    color: #10151b;
+    font-size: 15px;
+    font-weight: 800;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .process-button:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(139, 241, 63, 0.14);
+    }
+
+.process-cta p {
+    margin-top: 12px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* TABLET */
+
+@media (max-width: 950px) {
+    .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .process-arrow {
+        display: none;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .process {
+        padding: 70px 0;
+    }
+
+    .process-inner {
+        width: calc(100% - 30px);
+    }
+
+    .process-heading {
+        margin-bottom: 40px;
+    }
+
+        .process-heading h2 {
+            font-size: 38px;
+        }
+
+    .process-steps {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .process-step {
+        min-height: auto;
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        column-gap: 16px;
+        align-items: start;
+    }
+
+    .process-number {
+        grid-row: 1 / span 2;
+        margin-bottom: 0;
+        font-size: 28px;
+    }
+
+    .process-step h3 {
+        margin-bottom: 8px;
+        font-size: 18px;
+    }
+
+    .process-step > p {
+        font-size: 13px;
+    }
+
+    .process-cta {
+        margin-top: 40px;
+    }
+
+    .process-button {
+        width: 100%;
+    }
+}

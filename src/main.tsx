@@ -11,6 +11,7 @@ import "./styles/footer.css";
 import "./styles/contact.css";
 import "./styles/faq.css";
 import "./styles/about.css";
+import "./styles/process.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
