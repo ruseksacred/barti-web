@@ -1,12 +1,12 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import Services from "./components/Services"
-import Footer from "./components/Footer";
-import Contact from "./components/Contact";
+import Services from "./components/Services";
+import Portfolio from "./components/Portfolio";
+import Process from "./components/Process";
 import FAQ from "./components/FAQ";
 import About from "./components/About";
-import Process from "./components/Process";
-
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
     return (
@@ -16,11 +16,13 @@ function App() {
             <main>
                 <Hero />
                 <Services />
+                <Portfolio />
                 <Process />
                 <FAQ />
                 <About />
                 <Contact />
             </main>
+
             <Footer />
         </>
     );
