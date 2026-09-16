@@ -1,27 +1,38 @@
+import {
+    MessageCircle,
+    PencilRuler,
+    RefreshCcw,
+    Rocket,
+} from "lucide-react";
+
 const steps = [
     {
         number: "01",
         title: "Rozmowa",
         description:
             "Poznaję Twoją firmę, potrzeby i cel strony. Ustalamy, czego naprawdę potrzebujesz.",
+        icon: MessageCircle,
     },
     {
         number: "02",
         title: "Projekt",
         description:
             "Przygotowuję wygląd i układ strony dopasowany do Twojej branży i klientów.",
+        icon: PencilRuler,
     },
     {
         number: "03",
         title: "Poprawki",
         description:
             "Omawiamy projekt i wprowadzamy potrzebne zmiany, aż wszystko będzie pasować.",
+        icon: RefreshCcw,
     },
     {
         number: "04",
         title: "Publikacja",
         description:
             "Podpinam domenę, uruchamiam stronę i pomagam również po jej wdrożeniu.",
+        icon: Rocket,
     },
 ];
 
@@ -41,19 +52,28 @@ const Process = () => {
                 </div>
 
                 <div className="process-steps">
-                    {steps.map((step, index) => (
-                        <div className="process-step" key={step.number}>
-                            <div className="process-number">{step.number}</div>
+                    {steps.map((step, index) => {
+                        const Icon = step.icon;
 
-                            <h3>{step.title}</h3>
+                        return (
+                            <div className="process-step" key={step.number}>
+                                <div className="process-step-top">
+                                    <div className="process-icon">
+                                        <Icon size={22} strokeWidth={2.2} />
+                                    </div>
 
-                            <p>{step.description}</p>
+                                    <div className="process-number">{step.number}</div>
+                                </div>
 
-                            {index < steps.length - 1 && (
-                                <div className="process-arrow">→</div>
-                            )}
-                        </div>
-                    ))}
+                                <h3>{step.title}</h3>
+                                <p>{step.description}</p>
+
+                                {index < steps.length - 1 && (
+                                    <div className="process-arrow">→</div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
 
                 <div className="process-cta">
@@ -62,9 +82,7 @@ const Process = () => {
                         <span>→</span>
                     </a>
 
-                    <p>
-                        To nic nie kosztuje i do niczego nie zobowiązuje.
-                    </p>
+                    <p>To nic nie kosztuje i do niczego nie zobowiązuje.</p>
                 </div>
             </div>
         </section>
