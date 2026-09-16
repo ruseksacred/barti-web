@@ -124,8 +124,6 @@ const Hero = () => {
                     <div className="hero-mobile-showcase">
                         <div className="mobile-preview">
                             <div className="phone-frame">
-                                <div className="phone-camera" />
-
                                 <div className="phone-frame-screen">
                                     <img
                                         src={studioDomMobile}
