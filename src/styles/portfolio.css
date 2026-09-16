@@ -225,24 +225,17 @@
 .portfolio-phone {
     width: 100%;
     max-width: 230px;
-    padding: 7px;
+    padding: 10px;
     background: #080d12;
     border: 2px solid #35404b;
-    border-radius: 32px;
+    border-radius: 34px;
     box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), 0 0 30px rgba(139, 241, 63, 0.05);
-}
-
-.portfolio-phone-camera {
-    width: 6px;
-    height: 6px;
-    margin: 2px auto 7px;
-    background: #35404b;
-    border-radius: 50%;
 }
 
 .portfolio-phone-screen {
     overflow: hidden;
-    border-radius: 24px;
+    border-radius: 26px;
+    background: #111820;
 }
 
     .portfolio-phone-screen img {
@@ -250,7 +243,6 @@
         width: 100%;
         height: auto;
     }
-
 
 /* =========================
    CONTENT

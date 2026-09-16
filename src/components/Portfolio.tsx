@@ -63,8 +63,6 @@ const Portfolio = () => {
                         {/* MOBILE */}
                         <div className="portfolio-mobile">
                             <div className="portfolio-phone">
-                                <div className="portfolio-phone-camera" />
-
                                 <div className="portfolio-phone-screen">
                                     <img
                                         src={warsztatMobile}
