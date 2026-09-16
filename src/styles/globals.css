@@ -51,4 +51,12 @@ img {
     .container {
         width: calc(100% - 30px);
     }
+
+
 }
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+

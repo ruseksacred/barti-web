@@ -142,6 +142,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 0;
 }
 
 .hero-glow {
@@ -167,6 +168,7 @@
     z-index: 2;
     width: 100%;
     max-width: 650px;
+    min-width: 0;
 }
 
 .browser-frame {
@@ -241,6 +243,7 @@
     display: none;
     width: 100%;
     justify-content: center;
+    min-width: 0;
 }
 
 .tablet-frame {
@@ -286,14 +289,19 @@
     display: none;
     position: relative;
     z-index: 2;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .mobile-preview {
     display: none;
+    min-width: 0;
 }
 
 
-/* PHONE */
+/* =========================
+   PHONE
+========================= */
 
 .phone-frame {
     position: relative;
@@ -305,21 +313,17 @@
     box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), 0 0 30px rgba(139, 241, 63, 0.06);
 }
 
-.phone-frame-notch {
-    position: absolute;
-    width: 60px;
-    height: 15px;
-    top: 7px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    background: #030608;
-    border-radius: 0 0 10px 10px;
+.phone-camera {
+    width: 6px;
+    height: 6px;
+    margin: 2px auto 7px;
+    border-radius: 50%;
+    background: #35404b;
 }
 
 .phone-frame-screen {
     overflow: hidden;
-    border-radius: 23px;
+    border-radius: 22px;
     background: #111820;
 }
 
@@ -391,18 +395,19 @@
     .hero {
         min-height: auto;
         padding: 44px 0 60px;
-        /* telefon nie będzie obcinany */
-        overflow: visible;
+        overflow: hidden;
     }
 
     .hero-inner {
         width: calc(100% - 30px);
         grid-template-columns: 1fr;
         gap: 38px;
+        min-width: 0;
     }
 
     .hero-content {
         text-align: center;
+        min-width: 0;
     }
 
     .hero-eyebrow {
@@ -432,7 +437,7 @@
     }
 
 
-    /* chowamy zwykłe features */
+    /* DESKTOP FEATURES OFF */
 
     .hero-features-desktop {
         display: none;
@@ -442,16 +447,18 @@
     /* PRAWA CZĘŚĆ */
 
     .hero-visual {
-        min-height: auto;
         width: 100%;
+        min-height: auto;
+        min-width: 0;
         display: block;
+        overflow: hidden;
     }
 
     .hero-glow {
-        width: 340px;
-        height: 340px;
+        width: 300px;
+        height: 300px;
         top: 20%;
-        right: -80px;
+        right: -20px;
     }
 
     .desktop-preview,
@@ -465,35 +472,40 @@
     .hero-mobile-showcase {
         display: grid;
         width: 100%;
-        grid-template-columns: minmax(145px, 0.8fr) minmax(180px, 1.2fr);
+        max-width: 100%;
+        min-width: 0;
+        grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
         align-items: center;
-        gap: 24px;
+        gap: 14px;
     }
 
     .mobile-preview {
         display: flex;
         width: 100%;
         justify-content: center;
+        min-width: 0;
     }
 
     .phone-frame {
         width: 100%;
-        max-width: 185px;
+        max-width: 170px;
     }
 
 
-    /* INFORMACJE OBOK TELEFONU */
+    /* INFORMACJE */
 
     .hero-mobile-features {
         display: flex;
         flex-direction: column;
-        gap: 28px;
+        gap: 26px;
         min-width: 0;
+        max-width: 100%;
     }
 
         .hero-mobile-features .hero-feature {
             text-align: left;
             gap: 9px;
+            min-width: 0;
         }
 
         .hero-mobile-features .hero-feature-icon {
@@ -503,11 +515,13 @@
         .hero-mobile-features .hero-feature strong {
             font-size: 14px;
             line-height: 1.25;
+            overflow-wrap: anywhere;
         }
 
         .hero-mobile-features .hero-feature p {
             font-size: 11px;
             line-height: 1.4;
+            overflow-wrap: anywhere;
         }
 }
 
@@ -519,32 +533,24 @@
 @media (max-width: 390px) {
 
     .hero-mobile-showcase {
-        grid-template-columns: 130px 1fr;
-        gap: 14px;
+        grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+        gap: 12px;
     }
 
     .phone-frame {
-        position: relative;
-        width: 100%;
-        padding: 7px;
-        background: #080d12;
-        border: 2px solid #35404b;
-        border-radius: 30px;
-        box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), 0 0 30px rgba(139, 241, 63, 0.06);
+        max-width: 140px;
+        padding: 5px;
+        border-radius: 24px;
     }
 
     .phone-frame-screen {
-        overflow: hidden;
-        border-radius: 22px;
-        background: #111820;
+        border-radius: 18px;
     }
 
     .phone-camera {
-        width: 6px;
-        height: 6px;
-        margin: 2px auto 7px;
-        border-radius: 50%;
-        background: #35404b;
+        width: 5px;
+        height: 5px;
+        margin: 2px auto 5px;
     }
 
     .hero-mobile-features {
