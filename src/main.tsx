@@ -14,6 +14,7 @@ import "./styles/faq.css";
 import "./styles/about.css";
 import "./styles/process.css";
 import "./styles/portfolio.css";
+import "./styles/privacy-policy.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

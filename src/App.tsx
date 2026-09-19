@@ -1,3 +1,5 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
@@ -8,7 +10,9 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
-function App() {
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
+function HomePage() {
     return (
         <>
             <Navbar />
@@ -25,6 +29,20 @@ function App() {
 
             <Footer />
         </>
+    );
+}
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route
+                    path="/polityka-prywatnosci"
+                    element={<PrivacyPolicy />}
+                />
+            </Routes>
+        </BrowserRouter>
     );
 }
 

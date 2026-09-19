@@ -18,6 +18,9 @@ const Footer = () => {
                     <a href="#cennik">Cennik</a>
                     <a href="#o-mnie">O mnie</a>
                     <a href="#kontakt">Kontakt</a>
+                    <a href="/polityka-prywatnosci">
+                        Polityka prywatności
+                    </a>
                 </nav>
 
                 <div className="footer-bottom">

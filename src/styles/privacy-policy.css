@@ -1,0 +1,212 @@
+/* =========================
+   PRIVACY POLICY
+========================= */
+
+.privacy-page {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text);
+}
+
+.privacy-container {
+    width: min(var(--container), calc(100% - 48px));
+    margin: 0 auto;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.privacy-hero {
+    padding: 100px 0 65px;
+    background: radial-gradient( circle at 75% 20%, rgba(139, 241, 63, 0.08), transparent 30% ), var(--background-dark);
+    border-bottom: 1px solid var(--border);
+}
+
+.privacy-eyebrow {
+    margin-bottom: 14px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.privacy-hero h1 {
+    max-width: 800px;
+    margin-bottom: 22px;
+    font-size: clamp(42px, 6vw, 68px);
+    line-height: 1;
+    letter-spacing: -3px;
+}
+
+.privacy-lead {
+    max-width: 720px;
+    color: var(--text-secondary);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.privacy-content {
+    padding: 70px 0 100px;
+}
+
+.privacy-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.privacy-card {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 24px;
+    padding: 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+    .privacy-card:hover {
+        transform: translateY(-2px);
+        background: var(--surface-light);
+        border-color: rgba(139, 241, 63, 0.25);
+    }
+
+
+/* =========================
+   NUMBER
+========================= */
+
+.privacy-number {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-soft);
+    border: 1px solid rgba(139, 241, 63, 0.2);
+    border-radius: 14px;
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+.privacy-card h2 {
+    margin-bottom: 12px;
+    color: var(--text);
+    font-size: 21px;
+    line-height: 1.25;
+}
+
+.privacy-card p {
+    max-width: 900px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+    .privacy-card p + p {
+        margin-top: 10px;
+    }
+
+.privacy-card a {
+    margin-left: 5px;
+    color: var(--primary);
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+    .privacy-card a:hover {
+        color: var(--primary-hover);
+    }
+
+
+/* =========================
+   BACK
+========================= */
+
+.privacy-back {
+    margin-top: 28px;
+}
+
+    .privacy-back a {
+        display: inline-flex;
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 700;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+        .privacy-back a:hover {
+            color: var(--primary-hover);
+            transform: translateX(-3px);
+        }
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .privacy-container {
+        width: calc(100% - 30px);
+    }
+
+    .privacy-hero {
+        padding: 70px 0 50px;
+    }
+
+        .privacy-hero h1 {
+            font-size: 42px;
+            letter-spacing: -2px;
+        }
+
+    .privacy-lead {
+        font-size: 15px;
+    }
+
+    .privacy-content {
+        padding: 45px 0 70px;
+    }
+
+    .privacy-card {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 22px;
+        border-radius: 16px;
+    }
+
+    .privacy-number {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 14px;
+    }
+
+    .privacy-card h2 {
+        font-size: 18px;
+    }
+
+    .privacy-card p {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+}
