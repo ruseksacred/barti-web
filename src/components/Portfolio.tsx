@@ -80,7 +80,7 @@ const projects: Project[] = [
          * Jeśli masz inny adres strony,
          * zmień tylko tę wartość.
          */
-        website: "https://rowerylatoszynzdroj.pl",
+        website: "https://wypozyczalnia-rowerow.vercel.app/",
         displayUrl: "rowerylatoszynzdroj.pl",
 
         desktop: roweryDesktop,
