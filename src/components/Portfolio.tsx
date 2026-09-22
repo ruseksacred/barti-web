@@ -89,11 +89,12 @@ const projects: Project[] = [
 ];
 
 /*
- * Duplikujemy projekty:
+ * Dublujemy zestaw:
  *
  * Warsztat | Rowery | Warsztat | Rowery
  *
- * Dzięki temu możemy przewijać tor bez końca.
+ * Dzięki temu możemy zrobić
+ * niewidoczną nieskończoną pętlę.
  */
 const loopProjects = [
     ...projects,
@@ -103,42 +104,138 @@ const loopProjects = [
 const SWIPE_DISTANCE = 50;
 
 /*
- * Ile sekund zajmuje przesunięcie
- * mniej więcej o szerokość jednego ekranu.
+ * Ile sekund trwa przejechanie
+ * szerokości jednego całego projektu.
  *
- * Większa liczba = wolniejsze płynięcie.
+ * Większa wartość = wolniej.
  */
 const AUTO_SCROLL_SECONDS = 18;
 
+const MANUAL_ANIMATION_TIME = 650;
+
 const Portfolio = () => {
-    const sliderRef =
+    const viewportRef =
         useRef<HTMLDivElement | null>(null);
 
-    const animationFrameRef =
+    const trackRef =
+        useRef<HTMLDivElement | null>(null);
+
+    const offsetRef = useRef(0);
+
+    const loopWidthRef = useRef(0);
+
+    const autoplayFrameRef =
         useRef<number | null>(null);
 
-    const lastFrameRef =
+    const manualFrameRef =
+        useRef<number | null>(null);
+
+    const lastTimestampRef =
         useRef<number | null>(null);
 
     const touchStartX =
         useRef<number | null>(null);
 
-    const manualResetTimer =
-        useRef<number | null>(null);
-
-    const [userControlled, setUserControlled] =
+    const [manualMode, setManualMode] =
         useState(false);
 
     const [reducedMotion, setReducedMotion] =
         useState(false);
 
     /*
-     * prefers-reduced-motion
+     * =========================
+     * TRANSFORM
+     * =========================
      */
+
+    const applyTransform = () => {
+        const track = trackRef.current;
+
+        if (!track) {
+            return;
+        }
+
+        track.style.transform =
+            `translate3d(${-offsetRef.current}px, 0, 0)`;
+    };
+
+    /*
+     * =========================
+     * POMIAR SLIDERA
+     * =========================
+     */
+
+    const measureSlider = () => {
+        const track = trackRef.current;
+
+        if (!track) {
+            return;
+        }
+
+        const slides =
+            track.querySelectorAll<HTMLElement>(
+                ".portfolio-slide"
+            );
+
+        const duplicateStart =
+            slides[projects.length];
+
+        if (!duplicateStart) {
+            return;
+        }
+
+        const newLoopWidth =
+            duplicateStart.offsetLeft;
+
+        const oldLoopWidth =
+            loopWidthRef.current;
+
+        /*
+         * Przy zmianie szerokości ekranu
+         * zachowujemy mniej więcej tę samą
+         * pozycję w sliderze.
+         */
+        if (
+            oldLoopWidth > 0 &&
+            newLoopWidth > 0
+        ) {
+            const progress =
+                offsetRef.current /
+                oldLoopWidth;
+
+            offsetRef.current =
+                progress *
+                newLoopWidth;
+        }
+
+        loopWidthRef.current =
+            newLoopWidth;
+
+        /*
+         * Normalizacja po resize.
+         */
+        while (
+            offsetRef.current >=
+            newLoopWidth
+        ) {
+            offsetRef.current -=
+                newLoopWidth;
+        }
+
+        applyTransform();
+    };
+
+    /*
+     * =========================
+     * REDUCED MOTION
+     * =========================
+     */
+
     useEffect(() => {
-        const mediaQuery = window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        );
+        const mediaQuery =
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            );
 
         const updatePreference = () => {
             setReducedMotion(
@@ -163,16 +260,64 @@ const Portfolio = () => {
 
     /*
      * =========================
-     * CIĄGŁY AUTOPLAY
+     * RESIZE
+     * =========================
+     */
+
+    useEffect(() => {
+        measureSlider();
+
+        const viewport =
+            viewportRef.current;
+
+        if (!viewport) {
+            return;
+        }
+
+        let resizeObserver:
+            ResizeObserver | null = null;
+
+        if (
+            typeof ResizeObserver !==
+            "undefined"
+        ) {
+            resizeObserver =
+                new ResizeObserver(() => {
+                    measureSlider();
+                });
+
+            resizeObserver.observe(
+                viewport
+            );
+        }
+
+        window.addEventListener(
+            "resize",
+            measureSlider
+        );
+
+        return () => {
+            resizeObserver?.disconnect();
+
+            window.removeEventListener(
+                "resize",
+                measureSlider
+            );
+        };
+    }, []);
+
+    /*
+     * =========================
+     * AUTOPLAY
      * =========================
      *
-     * Nie przeskakujemy już o 100%.
-     * Zamiast tego co klatkę przesuwamy
-     * scrollLeft o bardzo małą wartość.
+     * Ruch odbywa się przez translate3d.
+     *
+     * Nie używamy scrollLeft.
      */
     useEffect(() => {
         if (
-            userControlled ||
+            manualMode ||
             reducedMotion
         ) {
             return;
@@ -181,11 +326,17 @@ const Portfolio = () => {
         const animate = (
             timestamp: number
         ) => {
-            const slider =
-                sliderRef.current;
+            const viewport =
+                viewportRef.current;
 
-            if (!slider) {
-                animationFrameRef.current =
+            const loopWidth =
+                loopWidthRef.current;
+
+            if (
+                !viewport ||
+                loopWidth <= 0
+            ) {
+                autoplayFrameRef.current =
                     requestAnimationFrame(
                         animate
                     );
@@ -194,158 +345,225 @@ const Portfolio = () => {
             }
 
             if (
-                lastFrameRef.current === null
+                lastTimestampRef.current ===
+                null
             ) {
-                lastFrameRef.current =
+                lastTimestampRef.current =
                     timestamp;
             }
 
             /*
-             * Ograniczamy deltaTime,
-             * żeby po zmianie karty
-             * przeglądarki slider nie skoczył.
+             * Ograniczamy deltaTime.
+             *
+             * Ważne np. gdy użytkownik
+             * wróci do Safari po chwili.
              */
-            const deltaTime = Math.min(
-                timestamp -
-                    lastFrameRef.current,
-                40
-            );
+            const delta =
+                Math.min(
+                    timestamp -
+                        lastTimestampRef.current,
+                    40
+                );
 
-            lastFrameRef.current =
+            lastTimestampRef.current =
                 timestamp;
 
-            /*
-             * Jeden viewport w około
-             * AUTO_SCROLL_SECONDS sekund.
-             */
-            const speed =
-                slider.clientWidth /
+            const pixelsPerMs =
+                viewport.clientWidth /
                 (AUTO_SCROLL_SECONDS *
                     1000);
 
-            slider.scrollLeft +=
-                speed * deltaTime;
-
-            const slides =
-                slider.querySelectorAll<HTMLElement>(
-                    ".portfolio-slide"
-                );
+            offsetRef.current +=
+                pixelsPerMs * delta;
 
             /*
-             * Pierwszy element drugiego
-             * zestawu projektów.
-             */
-            const duplicateStart =
-                slides[projects.length]
-                    ?.offsetLeft ?? 0;
-
-            /*
-             * Gdy dojedziemy do kopii,
-             * cofamy scroll o dokładnie
-             * szerokość pierwszego zestawu.
-             *
-             * Wizualnie użytkownik tego
-             * nie zauważy, bo widok jest
-             * identyczny.
+             * Niewidoczna pętla.
              */
             if (
-                duplicateStart > 0 &&
-                slider.scrollLeft >=
-                    duplicateStart
+                offsetRef.current >=
+                loopWidth
             ) {
-                slider.scrollLeft -=
-                    duplicateStart;
+                offsetRef.current -=
+                    loopWidth;
             }
 
-            animationFrameRef.current =
+            applyTransform();
+
+            autoplayFrameRef.current =
                 requestAnimationFrame(
                     animate
                 );
         };
 
-        animationFrameRef.current =
-            requestAnimationFrame(animate);
+        autoplayFrameRef.current =
+            requestAnimationFrame(
+                animate
+            );
 
         return () => {
             if (
-                animationFrameRef.current !==
+                autoplayFrameRef.current !==
                 null
             ) {
                 cancelAnimationFrame(
-                    animationFrameRef.current
+                    autoplayFrameRef.current
                 );
             }
 
-            animationFrameRef.current =
+            autoplayFrameRef.current =
                 null;
 
-            lastFrameRef.current =
+            lastTimestampRef.current =
                 null;
         };
     }, [
-        userControlled,
+        manualMode,
         reducedMotion,
     ]);
 
     /*
-     * Użytkownik przejmuje kontrolę.
+     * =========================
+     * MANUAL MODE
+     * =========================
      */
+
     const stopAutoplay = () => {
-        setUserControlled(true);
+        setManualMode(true);
 
-        lastFrameRef.current = null;
+        lastTimestampRef.current =
+            null;
     };
 
     /*
-     * Normalizujemy scroll tak,
-     * aby znajdował się w pierwszym
-     * zestawie projektów.
+     * =========================
+     * PŁYNNE PRZEJŚCIE
+     * =========================
      */
-    const normalizePosition = () => {
-        const slider =
-            sliderRef.current;
 
-        if (!slider) {
-            return 0;
-        }
-
-        const slides =
-            slider.querySelectorAll<HTMLElement>(
-                ".portfolio-slide"
-            );
-
-        const duplicateStart =
-            slides[projects.length]
-                ?.offsetLeft ?? 0;
-
+    const animateToOffset = (
+        targetOffset: number
+    ) => {
         if (
-            duplicateStart > 0 &&
-            slider.scrollLeft >=
-                duplicateStart
+            manualFrameRef.current !==
+            null
         ) {
-            slider.scrollLeft -=
-                duplicateStart;
+            cancelAnimationFrame(
+                manualFrameRef.current
+            );
         }
 
-        return duplicateStart;
+        const startOffset =
+            offsetRef.current;
+
+        if (reducedMotion) {
+            offsetRef.current =
+                targetOffset;
+
+            applyTransform();
+
+            return;
+        }
+
+        const startTime =
+            performance.now();
+
+        const animate = (
+            timestamp: number
+        ) => {
+            const elapsed =
+                timestamp -
+                startTime;
+
+            const progress =
+                Math.min(
+                    elapsed /
+                        MANUAL_ANIMATION_TIME,
+                    1
+                );
+
+            /*
+             * Ease-out cubic.
+             */
+            const eased =
+                1 -
+                Math.pow(
+                    1 - progress,
+                    3
+                );
+
+            offsetRef.current =
+                startOffset +
+                (targetOffset -
+                    startOffset) *
+                    eased;
+
+            applyTransform();
+
+            if (progress < 1) {
+                manualFrameRef.current =
+                    requestAnimationFrame(
+                        animate
+                    );
+
+                return;
+            }
+
+            offsetRef.current =
+                targetOffset;
+
+            /*
+             * Jeśli dojechaliśmy do
+             * zdublowanego zestawu,
+             * cofamy się bez zmiany obrazu.
+             */
+            const loopWidth =
+                loopWidthRef.current;
+
+            if (
+                loopWidth > 0 &&
+                offsetRef.current >=
+                    loopWidth
+            ) {
+                offsetRef.current -=
+                    loopWidth;
+
+                applyTransform();
+            }
+
+            manualFrameRef.current =
+                null;
+        };
+
+        manualFrameRef.current =
+            requestAnimationFrame(
+                animate
+            );
     };
 
     /*
-     * Znajdujemy projekt znajdujący się
-     * najbliżej lewej krawędzi viewportu.
+     * =========================
+     * AKTUALNY PROJEKT
+     * =========================
      */
+
     const getNearestProjectIndex =
         () => {
-            const slider =
-                sliderRef.current;
+            const track =
+                trackRef.current;
 
-            if (!slider) {
+            const loopWidth =
+                loopWidthRef.current;
+
+            if (
+                !track ||
+                loopWidth <= 0
+            ) {
                 return 0;
             }
 
             const slides =
                 Array.from(
-                    slider.querySelectorAll<HTMLElement>(
+                    track.querySelectorAll<HTMLElement>(
                         ".portfolio-slide"
                     )
                 ).slice(
@@ -353,7 +571,17 @@ const Portfolio = () => {
                     projects.length
                 );
 
+            let normalized =
+                offsetRef.current %
+                loopWidth;
+
+            if (normalized < 0) {
+                normalized +=
+                    loopWidth;
+            }
+
             let nearestIndex = 0;
+
             let nearestDistance =
                 Number.POSITIVE_INFINITY;
 
@@ -361,8 +589,8 @@ const Portfolio = () => {
                 (slide, index) => {
                     const distance =
                         Math.abs(
-                            slide.offsetLeft -
-                                slider.scrollLeft
+                            normalized -
+                                slide.offsetLeft
                         );
 
                     if (
@@ -381,30 +609,53 @@ const Portfolio = () => {
             return nearestIndex;
         };
 
+    /*
+     * =========================
+     * NEXT
+     * =========================
+     */
+
     const nextProject = () => {
         stopAutoplay();
 
-        const slider =
-            sliderRef.current;
+        const track =
+            trackRef.current;
 
-        if (!slider) {
+        const loopWidth =
+            loopWidthRef.current;
+
+        if (
+            !track ||
+            loopWidth <= 0
+        ) {
             return;
         }
 
-        normalizePosition();
-
         const slides =
-            slider.querySelectorAll<HTMLElement>(
+            track.querySelectorAll<HTMLElement>(
                 ".portfolio-slide"
             );
+
+        let normalized =
+            offsetRef.current %
+            loopWidth;
+
+        if (normalized < 0) {
+            normalized +=
+                loopWidth;
+        }
+
+        offsetRef.current =
+            normalized;
+
+        applyTransform();
 
         const current =
             getNearestProjectIndex();
 
         /*
-         * Jeśli jesteśmy na ostatnim,
-         * jedziemy do kopii pierwszego,
-         * czyli cały czas w prawo.
+         * Z ostatniego jedziemy do
+         * kopii pierwszego po prawej.
          */
         const targetIndex =
             current ===
@@ -419,118 +670,98 @@ const Portfolio = () => {
             return;
         }
 
-        slider.scrollTo({
-            left: target.offsetLeft,
-            behavior: "smooth",
-        });
-
-        /*
-         * Jeśli pojechaliśmy do kopii
-         * pierwszego projektu,
-         * po zakończeniu animacji
-         * bezszelestnie wracamy
-         * do oryginalnego początku.
-         */
-        if (
-            targetIndex ===
-            projects.length
-        ) {
-            if (
-                manualResetTimer.current !==
-                null
-            ) {
-                window.clearTimeout(
-                    manualResetTimer.current
-                );
-            }
-
-            manualResetTimer.current =
-                window.setTimeout(() => {
-                    const first =
-                        slides[0];
-
-                    if (
-                        slider &&
-                        first
-                    ) {
-                        slider.scrollLeft =
-                            first.offsetLeft;
-                    }
-                }, 650);
-        }
+        animateToOffset(
+            target.offsetLeft
+        );
     };
+
+    /*
+     * =========================
+     * PREVIOUS
+     * =========================
+     */
 
     const previousProject = () => {
         stopAutoplay();
 
-        const slider =
-            sliderRef.current;
+        const track =
+            trackRef.current;
 
-        if (!slider) {
+        const loopWidth =
+            loopWidthRef.current;
+
+        if (
+            !track ||
+            loopWidth <= 0
+        ) {
             return;
         }
 
         const slides =
-            slider.querySelectorAll<HTMLElement>(
+            track.querySelectorAll<HTMLElement>(
                 ".portfolio-slide"
             );
 
-        const duplicateStart =
-            normalizePosition();
+        let normalized =
+            offsetRef.current %
+            loopWidth;
+
+        if (normalized < 0) {
+            normalized +=
+                loopWidth;
+        }
+
+        offsetRef.current =
+            normalized;
+
+        applyTransform();
 
         const current =
             getNearestProjectIndex();
 
         /*
-         * Jeśli jesteśmy na pierwszym
-         * projekcie i klikamy wstecz:
-         *
+         * Jeżeli jesteśmy na pierwszym,
          * przenosimy się niewidocznie
-         * do jego kopii w drugim zestawie,
-         * a następnie płynnie jedziemy
-         * w lewo.
+         * do jego kopii.
          */
         if (current === 0) {
-            slider.scrollLeft +=
-                duplicateStart;
+            offsetRef.current +=
+                loopWidth;
 
-            const previous =
+            applyTransform();
+
+            const target =
                 slides[
-                    projects.length * 2 -
+                    projects.length -
                         1
                 ];
 
-            if (!previous) {
+            if (!target) {
                 return;
             }
 
-            requestAnimationFrame(() => {
-                slider.scrollTo({
-                    left:
-                        previous.offsetLeft,
-                    behavior: "smooth",
-                });
-            });
+            animateToOffset(
+                target.offsetLeft
+            );
 
             return;
         }
 
-        const previous =
+        const target =
             slides[current - 1];
 
-        if (!previous) {
+        if (!target) {
             return;
         }
 
-        slider.scrollTo({
-            left: previous.offsetLeft,
-            behavior: "smooth",
-        });
+        animateToOffset(
+            target.offsetLeft
+        );
     };
 
     /*
      * =========================
-     * SWIPE
+     * TOUCH / SWIPE
      * =========================
      */
 
@@ -570,163 +801,37 @@ const Portfolio = () => {
             previousProject();
         }
 
-        touchStartX.current = null;
+        touchStartX.current =
+            null;
     };
 
-    const renderProject = (
-        project: Project,
-        index: number
-    ) => {
-        return (
-            <div
-                className="portfolio-slide"
-                key={`${project.name}-${index}`}
-            >
-                <article className="portfolio-project">
+    /*
+     * =========================
+     * CLEANUP
+     * =========================
+     */
 
-                    {/* PREVIEW */}
+    useEffect(() => {
+        return () => {
+            if (
+                autoplayFrameRef.current !==
+                null
+            ) {
+                cancelAnimationFrame(
+                    autoplayFrameRef.current
+                );
+            }
 
-                    <div className="portfolio-preview">
-                        <div className="portfolio-glow" />
-
-                        {/* DESKTOP */}
-
-                        <div className="portfolio-desktop">
-                            <div className="portfolio-browser">
-                                <div className="portfolio-browser-top">
-                                    <div className="portfolio-browser-dots">
-                                        <span />
-                                        <span />
-                                        <span />
-                                    </div>
-
-                                    <div className="portfolio-browser-url">
-                                        {
-                                            project.displayUrl
-                                        }
-                                    </div>
-                                </div>
-
-                                <div className="portfolio-browser-screen">
-                                    <img
-                                        src={
-                                            project.desktop
-                                        }
-                                        alt={`${project.name} - wersja desktopowa`}
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* TABLET */}
-
-                        <div className="portfolio-tablet">
-                            <div className="portfolio-tablet-frame">
-                                <div className="portfolio-tablet-screen">
-                                    <img
-                                        src={
-                                            project.tablet
-                                        }
-                                        alt={`${project.name} - wersja tabletowa`}
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* MOBILE */}
-
-                        <div className="portfolio-mobile">
-                            <div className="portfolio-phone">
-                                <div className="portfolio-phone-screen">
-                                    <img
-                                        src={
-                                            project.mobile
-                                        }
-                                        alt={`${project.name} - wersja mobilna`}
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* CONTENT */}
-
-                    <div className="portfolio-content">
-
-                        <div className="portfolio-type">
-                            {project.type}
-                        </div>
-
-                        <h3>
-                            {project.name}
-                        </h3>
-
-                        <p className="portfolio-description">
-                            {
-                                project.description
-                            }
-                        </p>
-
-                        <div className="portfolio-case">
-
-                            <div className="portfolio-case-item">
-                                <span>
-                                    Cel projektu
-                                </span>
-
-                                <p>
-                                    {
-                                        project.goal
-                                    }
-                                </p>
-                            </div>
-
-                            <div className="portfolio-case-item">
-                                <span>
-                                    Co zrobiłem
-                                </span>
-
-                                <p>
-                                    {
-                                        project.work
-                                    }
-                                </p>
-                            </div>
-
-                        </div>
-
-                        <div className="portfolio-tags">
-                            {project.tags.map(
-                                (tag) => (
-                                    <span
-                                        key={tag}
-                                    >
-                                        {tag}
-                                    </span>
-                                )
-                            )}
-                        </div>
-
-                        <a
-                            href={
-                                project.website
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                            className="portfolio-button"
-                        >
-                            Zobacz stronę
-
-                            <span>↗</span>
-                        </a>
-                    </div>
-                </article>
-            </div>
-        );
-    };
+            if (
+                manualFrameRef.current !==
+                null
+            ) {
+                cancelAnimationFrame(
+                    manualFrameRef.current
+                );
+            }
+        };
+    }, []);
 
     return (
         <section
@@ -761,7 +866,7 @@ const Portfolio = () => {
                 <div className="portfolio-slider">
 
                     <div
-                        ref={sliderRef}
+                        ref={viewportRef}
                         className="portfolio-slider-window"
                         onTouchStart={
                             handleTouchStart
@@ -771,13 +876,8 @@ const Portfolio = () => {
                         }
                     >
                         <div
+                            ref={trackRef}
                             className="portfolio-track"
-                            style={{
-                                width: `${
-                                    loopProjects.length *
-                                    100
-                                }%`,
-                            }}
                         >
                             {loopProjects.map(
                                 (
@@ -785,26 +885,180 @@ const Portfolio = () => {
                                     index
                                 ) => (
                                     <div
+                                        className="portfolio-slide"
                                         key={`${project.name}-${index}`}
-                                        style={{
-                                            flex: `0 0 ${
-                                                100 /
-                                                loopProjects.length
-                                            }%`,
-                                        }}
-                                        className="portfolio-slide-wrapper"
                                     >
-                                        {renderProject(
-                                            project,
-                                            index
-                                        )}
+                                        <article className="portfolio-project">
+
+                                            {/* PREVIEW */}
+
+                                            <div className="portfolio-preview">
+
+                                                <div className="portfolio-glow" />
+
+                                                {/* DESKTOP */}
+
+                                                <div className="portfolio-desktop">
+
+                                                    <div className="portfolio-browser">
+
+                                                        <div className="portfolio-browser-top">
+
+                                                            <div className="portfolio-browser-dots">
+                                                                <span />
+                                                                <span />
+                                                                <span />
+                                                            </div>
+
+                                                            <div className="portfolio-browser-url">
+                                                                {
+                                                                    project.displayUrl
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="portfolio-browser-screen">
+                                                            <img
+                                                                src={
+                                                                    project.desktop
+                                                                }
+                                                                alt={`${project.name} - wersja desktopowa`}
+                                                                loading="lazy"
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                {/* TABLET */}
+
+                                                <div className="portfolio-tablet">
+
+                                                    <div className="portfolio-tablet-frame">
+
+                                                        <div className="portfolio-tablet-screen">
+                                                            <img
+                                                                src={
+                                                                    project.tablet
+                                                                }
+                                                                alt={`${project.name} - wersja tabletowa`}
+                                                                loading="lazy"
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                {/* MOBILE */}
+
+                                                <div className="portfolio-mobile">
+
+                                                    <div className="portfolio-phone">
+
+                                                        <div className="portfolio-phone-screen">
+                                                            <img
+                                                                src={
+                                                                    project.mobile
+                                                                }
+                                                                alt={`${project.name} - wersja mobilna`}
+                                                                loading="lazy"
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* CONTENT */}
+
+                                            <div className="portfolio-content">
+
+                                                <div className="portfolio-type">
+                                                    {
+                                                        project.type
+                                                    }
+                                                </div>
+
+                                                <h3>
+                                                    {
+                                                        project.name
+                                                    }
+                                                </h3>
+
+                                                <p className="portfolio-description">
+                                                    {
+                                                        project.description
+                                                    }
+                                                </p>
+
+                                                <div className="portfolio-case">
+
+                                                    <div className="portfolio-case-item">
+                                                        <span>
+                                                            Cel projektu
+                                                        </span>
+
+                                                        <p>
+                                                            {
+                                                                project.goal
+                                                            }
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="portfolio-case-item">
+                                                        <span>
+                                                            Co zrobiłem
+                                                        </span>
+
+                                                        <p>
+                                                            {
+                                                                project.work
+                                                            }
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="portfolio-tags">
+                                                    {project.tags.map(
+                                                        (
+                                                            tag
+                                                        ) => (
+                                                            <span
+                                                                key={
+                                                                    tag
+                                                                }
+                                                            >
+                                                                {
+                                                                    tag
+                                                                }
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </div>
+
+                                                <a
+                                                    href={
+                                                        project.website
+                                                    }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="portfolio-button"
+                                                >
+                                                    Zobacz stronę
+                                                    <span>
+                                                        ↗
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </article>
                                     </div>
                                 )
                             )}
                         </div>
                     </div>
 
-                    {/* TYLKO STRZAŁKI */}
+                    {/* STRZAŁKI */}
 
                     <div className="portfolio-arrows">
 
