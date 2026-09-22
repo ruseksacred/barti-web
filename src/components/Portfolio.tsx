@@ -3,6 +3,7 @@ import {
     useRef,
     useState,
     type TouchEvent,
+    type TransitionEvent,
 } from "react";
 
 import warsztatDesktop from "../assets/warsztat-desktop.png";
@@ -76,10 +77,6 @@ const projects: Project[] = [
             "Responsywność",
         ],
 
-        /*
-         * Jeśli masz inny adres strony,
-         * zmień tylko tę wartość.
-         */
         website: "https://wypozyczalnia-rowerow.vercel.app/",
         displayUrl: "rowerylatoszynzdroj.pl",
 
@@ -89,95 +86,172 @@ const projects: Project[] = [
     },
 ];
 
-const AUTOPLAY_TIME = 7000;
+const AUTOPLAY_TIME = 6500;
 const SWIPE_DISTANCE = 50;
 
+/*
+ * Dodajemy kopię pierwszego projektu na końcu.
+ *
+ * Dzięki temu autoplay:
+ *
+ * 1 -> 2 -> kopia 1
+ *
+ * cały czas przesuwa się w jednym kierunku.
+ * Po dojściu do kopii resetujemy pozycję bez animacji.
+ */
+const sliderProjects = [
+    ...projects,
+    projects[0],
+];
+
 const Portfolio = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isPaused, setIsPaused] = useState(false);
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [trackIndex, setTrackIndex] = useState(0);
 
-    const touchStartX = useRef<number | null>(null);
+    const [userControlled, setUserControlled] =
+        useState(false);
 
-    const project = projects[activeIndex];
+    const [transitionEnabled, setTransitionEnabled] =
+        useState(true);
+
+    const [reducedMotion, setReducedMotion] =
+        useState(false);
+
+    const touchStartX =
+        useRef<number | null>(null);
 
     /*
-     * Sprawdzenie ustawienia ograniczenia animacji
-     * w systemie użytkownika.
+     * prefers-reduced-motion
      */
     useEffect(() => {
         const mediaQuery = window.matchMedia(
             "(prefers-reduced-motion: reduce)"
         );
 
-        const updateReducedMotion = () => {
+        const updateMotionPreference = () => {
             setReducedMotion(mediaQuery.matches);
         };
 
-        updateReducedMotion();
+        updateMotionPreference();
 
         mediaQuery.addEventListener(
             "change",
-            updateReducedMotion
+            updateMotionPreference
         );
 
         return () => {
             mediaQuery.removeEventListener(
                 "change",
-                updateReducedMotion
+                updateMotionPreference
             );
         };
     }, []);
 
     /*
-     * Autoplay.
+     * AUTOPLAY
      *
-     * Ponieważ activeIndex jest w dependencies,
-     * każde ręczne przełączenie automatycznie
-     * resetuje licznik 7 sekund.
+     * Działa tylko do momentu,
+     * kiedy użytkownik sam użyje slidera.
      */
     useEffect(() => {
-        if (isPaused || reducedMotion) {
+        if (
+            userControlled ||
+            reducedMotion ||
+            !transitionEnabled
+        ) {
             return;
         }
 
         const timer = window.setTimeout(() => {
-            setActiveIndex((current) =>
-                (current + 1) % projects.length
-            );
+            setTrackIndex((current) => current + 1);
         }, AUTOPLAY_TIME);
 
         return () => {
             window.clearTimeout(timer);
         };
-    }, [activeIndex, isPaused, reducedMotion]);
+    }, [
+        trackIndex,
+        userControlled,
+        reducedMotion,
+        transitionEnabled,
+    ]);
+
+    /*
+     * Gdy autoplay dojedzie do kopii
+     * pierwszego projektu:
+     *
+     * [1] [2] [1-copy]
+     *
+     * resetujemy pozycję do pierwszego slajdu
+     * bez animacji.
+     */
+    const handleTransitionEnd = (
+        event: TransitionEvent<HTMLDivElement>
+    ) => {
+        if (
+            event.propertyName !== "transform" ||
+            userControlled
+        ) {
+            return;
+        }
+
+        if (trackIndex === projects.length) {
+            setTransitionEnabled(false);
+            setTrackIndex(0);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTransitionEnabled(true);
+                });
+            });
+        }
+    };
 
     const nextProject = () => {
-        setActiveIndex((current) =>
-            (current + 1) % projects.length
-        );
+        setUserControlled(true);
+        setTransitionEnabled(true);
+
+        setTrackIndex((current) => {
+            const logicalIndex =
+                current % projects.length;
+
+            return (
+                (logicalIndex + 1) %
+                projects.length
+            );
+        });
     };
 
     const previousProject = () => {
-        setActiveIndex((current) =>
-            (current - 1 + projects.length) %
-            projects.length
-        );
+        setUserControlled(true);
+        setTransitionEnabled(true);
+
+        setTrackIndex((current) => {
+            const logicalIndex =
+                current % projects.length;
+
+            return (
+                (logicalIndex -
+                    1 +
+                    projects.length) %
+                projects.length
+            );
+        });
     };
 
-    const goToProject = (index: number) => {
-        setActiveIndex(index);
-    };
-
+    /*
+     * Swipe na telefonie / tablecie.
+     * Swipe również wyłącza autoplay,
+     * bo użytkownik przejął kontrolę.
+     */
     const handleTouchStart = (
-        event: TouchEvent<HTMLElement>
+        event: TouchEvent<HTMLDivElement>
     ) => {
         touchStartX.current =
             event.touches[0].clientX;
     };
 
     const handleTouchEnd = (
-        event: TouchEvent<HTMLElement>
+        event: TouchEvent<HTMLDivElement>
     ) => {
         if (touchStartX.current === null) {
             return;
@@ -191,22 +265,146 @@ const Portfolio = () => {
 
         if (distance > SWIPE_DISTANCE) {
             nextProject();
-        }
-
-        if (distance < -SWIPE_DISTANCE) {
+        } else if (
+            distance < -SWIPE_DISTANCE
+        ) {
             previousProject();
         }
 
         touchStartX.current = null;
     };
 
-    const formattedCurrent = String(
-        activeIndex + 1
-    ).padStart(2, "0");
+    const renderProject = (
+        project: Project,
+        index: number
+    ) => {
+        return (
+            <div
+                className="portfolio-slide"
+                key={`${project.name}-${index}`}
+            >
+                <article className="portfolio-project">
+                    {/* =========================
+                        PREVIEW
+                    ========================= */}
 
-    const formattedTotal = String(
-        projects.length
-    ).padStart(2, "0");
+                    <div className="portfolio-preview">
+                        <div className="portfolio-glow" />
+
+                        {/* DESKTOP */}
+
+                        <div className="portfolio-desktop">
+                            <div className="portfolio-browser">
+                                <div className="portfolio-browser-top">
+                                    <div className="portfolio-browser-dots">
+                                        <span />
+                                        <span />
+                                        <span />
+                                    </div>
+
+                                    <div className="portfolio-browser-url">
+                                        {project.displayUrl}
+                                    </div>
+                                </div>
+
+                                <div className="portfolio-browser-screen">
+                                    <img
+                                        src={project.desktop}
+                                        alt={`${project.name} - wersja desktopowa`}
+                                        loading="lazy"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* TABLET */}
+
+                        <div className="portfolio-tablet">
+                            <div className="portfolio-tablet-frame">
+                                <div className="portfolio-tablet-screen">
+                                    <img
+                                        src={project.tablet}
+                                        alt={`${project.name} - wersja tabletowa`}
+                                        loading="lazy"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* MOBILE */}
+
+                        <div className="portfolio-mobile">
+                            <div className="portfolio-phone">
+                                <div className="portfolio-phone-screen">
+                                    <img
+                                        src={project.mobile}
+                                        alt={`${project.name} - wersja mobilna`}
+                                        loading="lazy"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* =========================
+                        CONTENT
+                    ========================= */}
+
+                    <div className="portfolio-content">
+                        <div className="portfolio-type">
+                            {project.type}
+                        </div>
+
+                        <h3>{project.name}</h3>
+
+                        <p className="portfolio-description">
+                            {project.description}
+                        </p>
+
+                        <div className="portfolio-case">
+                            <div className="portfolio-case-item">
+                                <span>
+                                    Cel projektu
+                                </span>
+
+                                <p>
+                                    {project.goal}
+                                </p>
+                            </div>
+
+                            <div className="portfolio-case-item">
+                                <span>
+                                    Co zrobiłem
+                                </span>
+
+                                <p>
+                                    {project.work}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="portfolio-tags">
+                            {project.tags.map((tag) => (
+                                <span key={tag}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+
+                        <a
+                            href={project.website}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="portfolio-button"
+                        >
+                            Zobacz stronę
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        );
+    };
 
     return (
         <section
@@ -214,6 +412,11 @@ const Portfolio = () => {
             id="realizacje"
         >
             <div className="portfolio-inner">
+
+                {/* =========================
+                    HEADER
+                ========================= */}
+
                 <div className="portfolio-heading">
                     <div>
                         <p className="portfolio-eyebrow">
@@ -233,232 +436,60 @@ const Portfolio = () => {
                     </p>
                 </div>
 
+                {/* =========================
+                    SLIDER
+                ========================= */}
+
                 <div
                     className="portfolio-slider"
-                    onMouseEnter={() =>
-                        setIsPaused(true)
-                    }
-                    onMouseLeave={() =>
-                        setIsPaused(false)
-                    }
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <article
-                        className="portfolio-project"
-                        key={project.name}
-                    >
-                        {/* =========================
-                            PREVIEW
-                        ========================= */}
-
-                        <div className="portfolio-preview">
-                            <div className="portfolio-glow" />
-
-                            {/* DESKTOP */}
-
-                            <div className="portfolio-desktop">
-                                <div className="portfolio-browser">
-                                    <div className="portfolio-browser-top">
-                                        <div className="portfolio-browser-dots">
-                                            <span />
-                                            <span />
-                                            <span />
-                                        </div>
-
-                                        <div className="portfolio-browser-url">
-                                            {
-                                                project.displayUrl
-                                            }
-                                        </div>
-                                    </div>
-
-                                    <div className="portfolio-browser-screen">
-                                        <img
-                                            src={
-                                                project.desktop
-                                            }
-                                            alt={`${project.name} - wersja desktopowa`}
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* TABLET */}
-
-                            <div className="portfolio-tablet">
-                                <div className="portfolio-tablet-frame">
-                                    <div className="portfolio-tablet-screen">
-                                        <img
-                                            src={
-                                                project.tablet
-                                            }
-                                            alt={`${project.name} - wersja tabletowa`}
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* MOBILE */}
-
-                            <div className="portfolio-mobile">
-                                <div className="portfolio-phone">
-                                    <div className="portfolio-phone-screen">
-                                        <img
-                                            src={
-                                                project.mobile
-                                            }
-                                            alt={`${project.name} - wersja mobilna`}
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* =========================
-                            CONTENT
-                        ========================= */}
-
-                        <div className="portfolio-content">
-                            <div className="portfolio-type">
-                                {project.type}
-                            </div>
-
-                            <h3>{project.name}</h3>
-
-                            <p className="portfolio-description">
-                                {project.description}
-                            </p>
-
-                            <div className="portfolio-case">
-                                <div className="portfolio-case-item">
-                                    <span>
-                                        Cel projektu
-                                    </span>
-
-                                    <p>
-                                        {project.goal}
-                                    </p>
-                                </div>
-
-                                <div className="portfolio-case-item">
-                                    <span>
-                                        Co zrobiłem
-                                    </span>
-
-                                    <p>
-                                        {project.work}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="portfolio-tags">
-                                {project.tags.map(
-                                    (tag) => (
-                                        <span key={tag}>
-                                            {tag}
-                                        </span>
-                                    )
-                                )}
-                            </div>
-
-                            <a
-                                href={project.website}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="portfolio-button"
-                            >
-                                Zobacz stronę
-                                <span>↗</span>
-                            </a>
-                        </div>
-                    </article>
-
-                    {/* =========================
-                        CONTROLS
-                    ========================= */}
-
-                    <div className="portfolio-controls">
-                        <div className="portfolio-arrows">
-                            <button
-                                type="button"
-                                className="portfolio-arrow"
-                                onClick={
-                                    previousProject
-                                }
-                                aria-label="Poprzednia realizacja"
-                            >
-                                ←
-                            </button>
-
-                            <button
-                                type="button"
-                                className="portfolio-arrow"
-                                onClick={nextProject}
-                                aria-label="Następna realizacja"
-                            >
-                                →
-                            </button>
-                        </div>
-
-                        <div className="portfolio-pagination">
-                            <span className="portfolio-current">
-                                {formattedCurrent}
-                            </span>
-
-                            <span className="portfolio-divider">
-                                /
-                            </span>
-
-                            <span>
-                                {formattedTotal}
-                            </span>
-                        </div>
-
-                        <div className="portfolio-dots">
-                            {projects.map(
-                                (item, index) => (
-                                    <button
-                                        key={
-                                            item.name
-                                        }
-                                        type="button"
-                                        className={`portfolio-dot ${index ===
-                                                activeIndex
-                                                ? "active"
-                                                : ""
-                                            }`}
-                                        onClick={() =>
-                                            goToProject(
-                                                index
-                                            )
-                                        }
-                                        aria-label={`Pokaż projekt ${item.name}`}
-                                    />
-                                )
+                    <div className="portfolio-slider-window">
+                        <div
+                            className={`portfolio-track ${
+                                transitionEnabled
+                                    ? ""
+                                    : "no-transition"
+                            }`}
+                            style={{
+                                transform: `translateX(-${
+                                    trackIndex * 100
+                                }%)`,
+                            }}
+                            onTransitionEnd={
+                                handleTransitionEnd
+                            }
+                        >
+                            {sliderProjects.map(
+                                renderProject
                             )}
                         </div>
                     </div>
 
-                    {!reducedMotion && (
-                        <div className="portfolio-progress">
-                            <div
-                                key={activeIndex}
-                                className={`portfolio-progress-bar ${isPaused
-                                        ? "paused"
-                                        : ""
-                                    }`}
-                            />
-                        </div>
-                    )}
+                    {/* =========================
+                        SIMPLE ARROWS
+                    ========================= */}
 
-                    <p className="portfolio-swipe-hint">
-                        Przesuń, aby zobaczyć kolejną
-                        realizację
-                    </p>
+                    <div className="portfolio-arrows">
+                        <button
+                            type="button"
+                            className="portfolio-arrow"
+                            onClick={previousProject}
+                            aria-label="Poprzednia realizacja"
+                        >
+                            ←
+                        </button>
+
+                        <button
+                            type="button"
+                            className="portfolio-arrow"
+                            onClick={nextProject}
+                            aria-label="Następna realizacja"
+                        >
+                            →
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
