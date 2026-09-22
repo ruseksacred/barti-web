@@ -61,32 +61,53 @@
     position: relative;
     width: 100%;
     min-width: 0;
-    touch-action: pan-y;
 }
 
+
+/*
+ * To jest viewport slidera.
+ *
+ * JS porusza scrollLeft o kilka
+ * pikseli na sekundę.
+ */
 .portfolio-slider-window {
+    position: relative;
     width: 100%;
     overflow: hidden;
     border-radius: 24px;
+    touch-action: pan-y;
 }
 
+
+/*
+ * Wszystkie realizacje są fizycznie
+ * obok siebie.
+ */
 .portfolio-track {
     display: flex;
-    width: 100%;
-    transform: translateX(0);
-    transition: transform 1.15s cubic-bezier( 0.22, 0.61, 0.36, 1 );
+    align-items: stretch;
+    min-width: 0;
     will-change: transform;
 }
 
-    .portfolio-track.no-transition {
-        transition: none;
-    }
+
+/*
+ * Wrapper ma wysokość
+ * najwyższego elementu w tracku.
+ */
+.portfolio-slide-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    padding: 0 6px;
+    box-sizing: border-box;
+}
 
 .portfolio-slide {
-    flex: 0 0 100%;
     width: 100%;
+    display: flex;
+    align-items: stretch;
     min-width: 0;
-    box-sizing: border-box;
 }
 
 
@@ -96,6 +117,7 @@
 
 .portfolio-project {
     width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     align-items: center;
@@ -136,7 +158,7 @@
 
 
 /* =========================
-   DESKTOP PREVIEW
+   DESKTOP
 ========================= */
 
 .portfolio-desktop {
@@ -217,7 +239,7 @@
 
 
 /* =========================
-   TABLET PREVIEW
+   TABLET
 ========================= */
 
 .portfolio-tablet {
@@ -294,9 +316,13 @@
     position: relative;
     z-index: 2;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .portfolio-type {
+    align-self: flex-start;
     display: inline-flex;
     margin-bottom: 18px;
     padding: 7px 11px;
@@ -367,6 +393,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-top: auto;
     margin-bottom: 30px;
 }
 
@@ -385,6 +412,7 @@
 ========================= */
 
 .portfolio-button {
+    align-self: flex-start;
     min-height: 50px;
     padding: 0 20px;
     display: inline-flex;
@@ -415,7 +443,7 @@
 
 
 /* =========================
-   SIMPLE ARROWS
+   ARROWS
 ========================= */
 
 .portfolio-arrows {
@@ -483,6 +511,7 @@
 
     .portfolio-project {
         grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
         gap: 45px;
         padding: 38px;
     }
@@ -501,8 +530,13 @@
 
     .portfolio-content {
         max-width: 670px;
+        width: 100%;
         margin: 0 auto;
         text-align: center;
+    }
+
+    .portfolio-type {
+        align-self: center;
     }
 
     .portfolio-description {
@@ -512,6 +546,7 @@
 
     .portfolio-case {
         max-width: 600px;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
         text-align: left;
@@ -521,8 +556,8 @@
         justify-content: center;
     }
 
-    .portfolio-arrows {
-        margin-top: 24px;
+    .portfolio-button {
+        align-self: center;
     }
 }
 
@@ -560,9 +595,31 @@
         border-radius: 18px;
     }
 
+    /*
+     * Najważniejsze na mobile:
+     * wszystkie kafle mają tę samą wysokość.
+     */
+    .portfolio-track {
+        align-items: stretch;
+    }
+
+    .portfolio-slide-wrapper {
+        display: flex;
+        align-items: stretch;
+        padding: 0 4px;
+    }
+
+    .portfolio-slide {
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+    }
+
     .portfolio-project {
+        height: 100%;
         grid-template-columns: 1fr;
-        gap: 34px;
+        grid-template-rows: auto 1fr;
+        gap: 30px;
         padding: 24px 20px 28px;
         border-radius: 18px;
     }
@@ -586,16 +643,21 @@
     }
 
     .portfolio-phone {
-        max-width: 200px;
+        max-width: 185px;
     }
 
     .portfolio-content {
+        width: 100%;
         text-align: center;
     }
 
-        .portfolio-content h3 {
-            font-size: 31px;
-        }
+    .portfolio-type {
+        align-self: center;
+    }
+
+    .portfolio-content h3 {
+        font-size: 31px;
+    }
 
     .portfolio-description {
         margin-left: auto;
@@ -605,6 +667,7 @@
     }
 
     .portfolio-case {
+        width: 100%;
         margin-bottom: 25px;
         text-align: left;
     }
@@ -614,12 +677,15 @@
     }
 
     .portfolio-tags {
+        width: 100%;
         justify-content: center;
+        margin-top: auto;
         margin-bottom: 26px;
     }
 
     .portfolio-button {
         width: 100%;
+        align-self: stretch;
     }
 
     .portfolio-arrows {
@@ -650,7 +716,7 @@
     }
 
     .portfolio-phone {
-        max-width: 175px;
+        max-width: 165px;
     }
 
     .portfolio-content h3 {
@@ -673,10 +739,6 @@
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
-
-    .portfolio-track {
-        transition: none;
-    }
 
     .portfolio-arrow,
     .portfolio-button {
