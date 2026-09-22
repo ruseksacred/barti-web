@@ -69,9 +69,6 @@
     border-radius: 24px;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
-    /*
-     * Safari / iOS
-     */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
 }
@@ -80,9 +77,6 @@
     display: flex;
     align-items: stretch;
     width: 100%;
-    /*
-     * Najważniejsze pod Safari/iOS.
-     */
     will-change: transform;
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
@@ -458,20 +452,32 @@
 .portfolio-arrow {
     width: 46px;
     height: 46px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     padding: 0;
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 50%;
     color: var(--text);
     cursor: pointer;
-    font-size: 19px;
-    font-weight: 400;
+    line-height: 0;
     -webkit-tap-highlight-color: transparent;
     transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
+
+    .portfolio-arrow svg {
+        display: block;
+        width: 19px;
+        height: 19px;
+        flex-shrink: 0;
+        stroke: currentColor;
+        pointer-events: none;
+    }
 
     .portfolio-arrow:hover {
         color: var(--primary);
@@ -597,10 +603,6 @@
         border-radius: 18px;
     }
 
-    /*
-     * Każdy slajd ma wysokość
-     * najwyższego slajdu w tracku.
-     */
     .portfolio-track {
         align-items: stretch;
     }
@@ -688,8 +690,12 @@
     .portfolio-arrow {
         width: 42px;
         height: 42px;
-        font-size: 18px;
     }
+
+        .portfolio-arrow svg {
+            width: 18px;
+            height: 18px;
+        }
 }
 
 
@@ -723,6 +729,11 @@
         width: 40px;
         height: 40px;
     }
+
+        .portfolio-arrow svg {
+            width: 17px;
+            height: 17px;
+        }
 }
 
 

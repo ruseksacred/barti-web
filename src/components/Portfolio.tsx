@@ -5,6 +5,11 @@ import {
     type TouchEvent,
 } from "react";
 
+import {
+    ArrowLeft,
+    ArrowRight,
+} from "lucide-react";
+
 import warsztatDesktop from "../assets/warsztat-desktop.png";
 import warsztatTablet from "../assets/warsztat-tablet.png";
 import warsztatMobile from "../assets/warsztat-mobile.png";
@@ -88,14 +93,6 @@ const projects: Project[] = [
     },
 ];
 
-/*
- * Dublujemy zestaw:
- *
- * Warsztat | Rowery | Warsztat | Rowery
- *
- * Dzięki temu możemy zrobić
- * niewidoczną nieskończoną pętlę.
- */
 const loopProjects = [
     ...projects,
     ...projects,
@@ -103,12 +100,6 @@ const loopProjects = [
 
 const SWIPE_DISTANCE = 50;
 
-/*
- * Ile sekund trwa przejechanie
- * szerokości jednego całego projektu.
- *
- * Większa wartość = wolniej.
- */
 const AUTO_SCROLL_SECONDS = 18;
 
 const MANUAL_ANIMATION_TIME = 650;
@@ -120,9 +111,11 @@ const Portfolio = () => {
     const trackRef =
         useRef<HTMLDivElement | null>(null);
 
-    const offsetRef = useRef(0);
+    const offsetRef =
+        useRef(0);
 
-    const loopWidthRef = useRef(0);
+    const loopWidthRef =
+        useRef(0);
 
     const autoplayFrameRef =
         useRef<number | null>(null);
@@ -142,14 +135,9 @@ const Portfolio = () => {
     const [reducedMotion, setReducedMotion] =
         useState(false);
 
-    /*
-     * =========================
-     * TRANSFORM
-     * =========================
-     */
-
     const applyTransform = () => {
-        const track = trackRef.current;
+        const track =
+            trackRef.current;
 
         if (!track) {
             return;
@@ -159,14 +147,9 @@ const Portfolio = () => {
             `translate3d(${-offsetRef.current}px, 0, 0)`;
     };
 
-    /*
-     * =========================
-     * POMIAR SLIDERA
-     * =========================
-     */
-
     const measureSlider = () => {
-        const track = trackRef.current;
+        const track =
+            trackRef.current;
 
         if (!track) {
             return;
@@ -190,11 +173,6 @@ const Portfolio = () => {
         const oldLoopWidth =
             loopWidthRef.current;
 
-        /*
-         * Przy zmianie szerokości ekranu
-         * zachowujemy mniej więcej tę samą
-         * pozycję w sliderze.
-         */
         if (
             oldLoopWidth > 0 &&
             newLoopWidth > 0
@@ -211,9 +189,6 @@ const Portfolio = () => {
         loopWidthRef.current =
             newLoopWidth;
 
-        /*
-         * Normalizacja po resize.
-         */
         while (
             offsetRef.current >=
             newLoopWidth
@@ -224,12 +199,6 @@ const Portfolio = () => {
 
         applyTransform();
     };
-
-    /*
-     * =========================
-     * REDUCED MOTION
-     * =========================
-     */
 
     useEffect(() => {
         const mediaQuery =
@@ -257,12 +226,6 @@ const Portfolio = () => {
             );
         };
     }, []);
-
-    /*
-     * =========================
-     * RESIZE
-     * =========================
-     */
 
     useEffect(() => {
         measureSlider();
@@ -306,15 +269,6 @@ const Portfolio = () => {
         };
     }, []);
 
-    /*
-     * =========================
-     * AUTOPLAY
-     * =========================
-     *
-     * Ruch odbywa się przez translate3d.
-     *
-     * Nie używamy scrollLeft.
-     */
     useEffect(() => {
         if (
             manualMode ||
@@ -352,12 +306,6 @@ const Portfolio = () => {
                     timestamp;
             }
 
-            /*
-             * Ograniczamy deltaTime.
-             *
-             * Ważne np. gdy użytkownik
-             * wróci do Safari po chwili.
-             */
             const delta =
                 Math.min(
                     timestamp -
@@ -376,9 +324,6 @@ const Portfolio = () => {
             offsetRef.current +=
                 pixelsPerMs * delta;
 
-            /*
-             * Niewidoczna pętla.
-             */
             if (
                 offsetRef.current >=
                 loopWidth
@@ -421,24 +366,12 @@ const Portfolio = () => {
         reducedMotion,
     ]);
 
-    /*
-     * =========================
-     * MANUAL MODE
-     * =========================
-     */
-
     const stopAutoplay = () => {
         setManualMode(true);
 
         lastTimestampRef.current =
             null;
     };
-
-    /*
-     * =========================
-     * PŁYNNE PRZEJŚCIE
-     * =========================
-     */
 
     const animateToOffset = (
         targetOffset: number
@@ -481,9 +414,6 @@ const Portfolio = () => {
                     1
                 );
 
-            /*
-             * Ease-out cubic.
-             */
             const eased =
                 1 -
                 Math.pow(
@@ -511,11 +441,6 @@ const Portfolio = () => {
             offsetRef.current =
                 targetOffset;
 
-            /*
-             * Jeśli dojechaliśmy do
-             * zdublowanego zestawu,
-             * cofamy się bez zmiany obrazu.
-             */
             const loopWidth =
                 loopWidthRef.current;
 
@@ -539,12 +464,6 @@ const Portfolio = () => {
                 animate
             );
     };
-
-    /*
-     * =========================
-     * AKTUALNY PROJEKT
-     * =========================
-     */
 
     const getNearestProjectIndex =
         () => {
@@ -609,12 +528,6 @@ const Portfolio = () => {
             return nearestIndex;
         };
 
-    /*
-     * =========================
-     * NEXT
-     * =========================
-     */
-
     const nextProject = () => {
         stopAutoplay();
 
@@ -653,10 +566,6 @@ const Portfolio = () => {
         const current =
             getNearestProjectIndex();
 
-        /*
-         * Z ostatniego jedziemy do
-         * kopii pierwszego po prawej.
-         */
         const targetIndex =
             current ===
             projects.length - 1
@@ -674,12 +583,6 @@ const Portfolio = () => {
             target.offsetLeft
         );
     };
-
-    /*
-     * =========================
-     * PREVIOUS
-     * =========================
-     */
 
     const previousProject = () => {
         stopAutoplay();
@@ -719,11 +622,6 @@ const Portfolio = () => {
         const current =
             getNearestProjectIndex();
 
-        /*
-         * Jeżeli jesteśmy na pierwszym,
-         * przenosimy się niewidocznie
-         * do jego kopii.
-         */
         if (current === 0) {
             offsetRef.current +=
                 loopWidth;
@@ -758,12 +656,6 @@ const Portfolio = () => {
             target.offsetLeft
         );
     };
-
-    /*
-     * =========================
-     * TOUCH / SWIPE
-     * =========================
-     */
 
     const handleTouchStart = (
         event: TouchEvent<HTMLDivElement>
@@ -805,12 +697,6 @@ const Portfolio = () => {
             null;
     };
 
-    /*
-     * =========================
-     * CLEANUP
-     * =========================
-     */
-
     useEffect(() => {
         return () => {
             if (
@@ -840,8 +726,6 @@ const Portfolio = () => {
         >
             <div className="portfolio-inner">
 
-                {/* HEADER */}
-
                 <div className="portfolio-heading">
                     <div>
                         <p className="portfolio-eyebrow">
@@ -860,8 +744,6 @@ const Portfolio = () => {
                         realizacje.
                     </p>
                 </div>
-
-                {/* SLIDER */}
 
                 <div className="portfolio-slider">
 
@@ -890,13 +772,9 @@ const Portfolio = () => {
                                     >
                                         <article className="portfolio-project">
 
-                                            {/* PREVIEW */}
-
                                             <div className="portfolio-preview">
 
                                                 <div className="portfolio-glow" />
-
-                                                {/* DESKTOP */}
 
                                                 <div className="portfolio-desktop">
 
@@ -930,8 +808,6 @@ const Portfolio = () => {
                                                     </div>
                                                 </div>
 
-                                                {/* TABLET */}
-
                                                 <div className="portfolio-tablet">
 
                                                     <div className="portfolio-tablet-frame">
@@ -948,8 +824,6 @@ const Portfolio = () => {
 
                                                     </div>
                                                 </div>
-
-                                                {/* MOBILE */}
 
                                                 <div className="portfolio-mobile">
 
@@ -968,8 +842,6 @@ const Portfolio = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            {/* CONTENT */}
 
                                             <div className="portfolio-content">
 
@@ -1046,6 +918,7 @@ const Portfolio = () => {
                                                     className="portfolio-button"
                                                 >
                                                     Zobacz stronę
+
                                                     <span>
                                                         ↗
                                                     </span>
@@ -1058,8 +931,6 @@ const Portfolio = () => {
                         </div>
                     </div>
 
-                    {/* STRZAŁKI */}
-
                     <div className="portfolio-arrows">
 
                         <button
@@ -1070,7 +941,11 @@ const Portfolio = () => {
                             }
                             aria-label="Poprzednia realizacja"
                         >
-                            ←
+                            <ArrowLeft
+                                size={19}
+                                strokeWidth={1.8}
+                                aria-hidden="true"
+                            />
                         </button>
 
                         <button
@@ -1081,7 +956,11 @@ const Portfolio = () => {
                             }
                             aria-label="Następna realizacja"
                         >
-                            →
+                            <ArrowRight
+                                size={19}
+                                strokeWidth={1.8}
+                                aria-hidden="true"
+                            />
                         </button>
 
                     </div>
