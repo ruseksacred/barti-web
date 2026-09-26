@@ -9,6 +9,7 @@ import FAQ from "./components/FAQ";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import ServiceQuiz from "./components/ServiceQuiz";
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
@@ -20,6 +21,7 @@ function HomePage() {
             <main>
                 <Hero />
                 <Services />
+                <ServiceQuiz />
                 <Portfolio />
                 <Process />
                 <FAQ />
